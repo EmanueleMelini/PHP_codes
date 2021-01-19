@@ -13,14 +13,34 @@
                     <?php
                     $username = $_POST["username"];
                     $password = $_POST["password"];
-                    echo("Username: ")
-                        .($username)
+                    $conn=new mysqli("localhost","root","","login");
+
+                    echo("Credenziali inserite<br>")
+                        .("Username: $username<br>Password: $password")
                         .("</td>")
                         .("</tr>")
                         .("<tr>")
-                        .("<td>")
-                        .("Password: ")
-                        .($password);
+                        .("<td>");
+
+                    if ($conn->connect_error)
+                        die ("Errore di connessione ($conn->connect_errno), $conn->connect_error");
+                    else
+                        echo "Connesso $conn->host_info  \n";
+
+                    $query1="select * from dati";
+                    $queryresult=$conn->query($query1);
+                    echo "<br>numero righe $queryresult->num_rows";
+                    $row=$queryresult->fetch_array();
+                    while ($row!=null){
+                        echo("<br><br>Username: $row[username]<br>Password: $row[password]");
+                        if($username==$row['username'] && $password==$row['password']) {
+                            echo("<br>Credenziali giuste");
+                        } else {
+                            echo("<br>Credenziali errate");
+                        }
+
+                        $row=$queryresult->fetch_array();
+                    }
                     ?>
                 </td>
             </tr>
