@@ -39,8 +39,8 @@
                 .("<input type='submit' value='Torna al login'><br>")
                 .("</form>")
                 .("<form action='cambiopass.php'>")
-                .("<input type='text' name='username' hidden value='$username'>")
-                .("<input type='text' name='password' hidden value='$password'>")
+                .("<input type='text' name='username' hidden value='".$username."'>")
+                .("<input type='text' name='password' hidden value='".$password."'>")
                 .("<input type='submit' value='Torna al cambio'><br>")
                 .("</form>");
             ?>
