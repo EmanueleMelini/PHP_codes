@@ -25,7 +25,7 @@
 
                     $query1 = "select * from dati";
 					$queryresult = $conn->query($query1);
-					if ($queryresult == null) {
+					if (!$queryresult) {
 						echo ("Errore nella query");
 					} else {
 						echo ("<br>numero righe $queryresult->num_rows");
