@@ -38,9 +38,9 @@
             echo ("<form action='login.html'>")
                 .("<input type='submit' value='Torna al login'><br>")
                 .("</form>")
-                .("<form action='cambiopass.php'>")
-                .("<input type='text' name='username' hidden value='".$username."'>")
-                .("<input type='text' name='password' hidden value='".$password."'>")
+                .("<form action='cambiopass.php' method='post'>")
+                .("<input type='text' name='username' hidden value='$username'>")
+                .("<input type='text' name='password' hidden value='$password'>")
                 .("<input type='submit' value='Torna al cambio'><br>")
                 .("</form>");
             ?>

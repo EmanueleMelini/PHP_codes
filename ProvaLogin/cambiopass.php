@@ -43,14 +43,25 @@
                             $row = $queryresult->fetch_array();
                         }
                         if($log) {
-                            echo ("<form action='cambio.php' method='post'>");
-                            echo ("<input type='text' name='usernameold' readonly value='$username'>");
-                            echo ("<input type='text' name='passwordold' readonly value='$password'>");
-                            echo ("<input type='text' name='username' placeholder='Cambia username'>");
-                            echo ("<input type='password' name='password' placeholder='Cambia password'>");
-                            echo ("<input type='submit' name='Cambia'>");
-                            echo ("</form>");
+                            echo ("</td>")
+                                .("</tr>")
+                                .("<tr>")
+                                .("<td>")
+                                .("<form action='cambio.php' method='post'>")
+                                .("<input type='text' name='usernameold' hidden value='$username'>")
+                                .("<input type='text' name='passwordold' hidden value='$password'>")
+                                .("<input type='text' name='username' placeholder='Cambia username'>")
+                                .("<input type='password' name='password' placeholder='Cambia password'>")
+                                .("<input type='submit' name='Cambia'>")
+                                .("</form>");
                         }
+                        echo ("</td>")
+                            .("</tr>")
+                            .("<tr>")
+                            .("<td>")
+                            ,("<form action='login.html'>")
+                            .("<input type='submit' value='Torna al login'><br>")
+                            .("</form>");
                     }
                     ?>
                 </td>
