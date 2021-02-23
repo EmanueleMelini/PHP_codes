@@ -11,9 +11,10 @@
     <?php
     require 'scuola_connect.php';
 
-    echo ("Nome<br><input type='text' name='nome'>")
-        . ("Cognome<br><input type='text' name='cognome'>")
-        . ("Classe<br><select name='classe'>");
+    echo ("<br>Nome&nbsp;<input type='text' name='nome'><br>")
+        . ("Cognome&nbsp;<input type='text' name='cognome'><br>")
+        . ("Classe&nbsp;<select name='classe'>")
+        . ("<option value=''>-</option>");
 
     $query1 = "select * from classi";
     $queryresult = $conn->query($query1);
@@ -22,13 +23,16 @@
     } else {
         $row = $queryresult->fetch_array();
         while ($row != null) {
-            echo("<option value='$row[keyc]'>$row[nome]</option>");
+            echo("<option value='$row[keyc]'>$row[keyc] - $row[nome]</option>");
             $row = $queryresult->fetch_array();
         }
-        echo("</select>");
+        echo("</select><br>");
     }
     ?>
-    <input type="submit" value="Inserisci">
+    <input type="submit" value="Inserisci"><br>
+</form>
+<form action="home.html">
+    <input type="submit" value="Home">
 </form>
 </body>
 </html>

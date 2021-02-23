@@ -11,24 +11,22 @@
 require 'scuola_connect.php';
 
 $query_classi = "select * from classi";
-$query_alunni = "select * from alunni";
 
 $queryresult_classi = $conn->query($query_classi);
 if (!$queryresult_classi) {
     echo("Errore nella query");
 } else {
-    $queryresult_alunni = $conn->query($query_alunni);
-    if (!$queryresult_alunni) {
-        echo("Errore nella query");
-    } else {
-        $row_classi = $queryresult_classi->fetch_array();
-        while ($row_classi != null) {
-            echo ("<br><br>Classe: $row_classi[nome]<br>");
-            $row_alunni = $queryresult_classi->fetch_array();
+    $row_classi = $queryresult_classi->fetch_array();
+    while ($row_classi != null) {
+        $query_alunni = "select * from alunni where alunni.keyc = '$row_classi[keyc]'";
+        $queryresult_alunni = $conn->query($query_alunni);
+        if (!$queryresult_alunni) {
+            echo("Errore nella query");
+        } else {
+            echo("<br>Classe: $row_classi[nome]<br>");
+            $row_alunni = $queryresult_alunni->fetch_array();
             while ($row_alunni != null) {
-                if($row_alunni['keyc'] == $row_classi['keyc']) {
-                    echo ("Alunno: $row_alunni[nome] $row_alunni[cognome] <br>");
-                }
+                echo("Alunno: $row_alunni[nome] $row_alunni[cognome] <br>");
                 $row_alunni = $queryresult_alunni->fetch_array();
             }
             $row_classi = $queryresult_classi->fetch_array();
@@ -36,5 +34,9 @@ if (!$queryresult_classi) {
     }
 }
 ?>
+<br>
+<form action="home.html">
+<input type="submit" value="Home">
+</form>
 </body>
 </html>
