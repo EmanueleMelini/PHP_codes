@@ -7,12 +7,19 @@
     <title>Upload Documenti</title>
 </head>
 <body>
-<form action="upload_document.php" method="post">
-    Titolo&nbsp;<input type="text" name="titolo"><br>
-    Tipo&nbsp;<input type="text" name="tipo_doc"><br>
+<form action="upload_document.php" method="post" enctype="multipart/form-data">
+    <!--Titolo&nbsp;<input type="text" name="titolo"><br>
+    Tipo&nbsp;<input type="text" name="tipo_doc"><br>-->
     Descrizione&nbsp;<input type="text" name="descrizione"><br>
-    Data&nbsp;<input type="date" name="data"><br>
+    <!--Data&nbsp;<input type="date" name="data"><br>-->
     <?php
+    session_start();
+    $_SESSION["data_upload"] = date("Y-m-d");
+    /*
+    $keyu = $_SESSION['keyu'];
+    $tipo = $_SESSION['tipo'];
+    $email = $_SESSION['email'];
+    $password = $_SESSION['password'];
     $keyu = $_POST['keyu'];
     $tipo = $_POST['tipo'];
     $email = $_POST['email'];
@@ -20,8 +27,9 @@
     echo("<input type='text' hidden name='tipo' value='$tipo'>");
     echo("<input type='text' hidden name='keyu' value='$keyu'>");
     echo("<input type='text' hidden value='$email' name='email'>");
-    echo("<input type='text' hidden value='$password' name='password'>");
+    echo("<input type='text' hidden value='$password' name='password'>");*/
     ?>
+    Inserisci Documento&nbsp;<input type="file" name="documento">
     <input type="submit" value="Upload">
 </form>
 <form action="index.html">

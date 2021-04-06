@@ -9,8 +9,15 @@
 <body>
 <?php
 require 'community_connect.php';
+session_start();
+if($_SERVER["HTTP_REFERER"] == "http://localhost/Login/Community/insert_document.php") {
+    echo "Upload effettuato correttamente";
+}
+$email = $_SESSION["email"];
+$password = $_SESSION["password"];
+/*
 $email = $_POST['email'];
-$password = $_POST['password'];
+$password = $_POST['password'];*/
 
 $query_utente = "select * from utenti where (email = '$email' and password = '$password')";
 $queryresult_utente = $conn->query($query_utente);
@@ -65,22 +72,24 @@ if (!$queryresult_utente) {
         $tipos = "Admin";
     }
 
-    echo("Correttamente loggato come:<br>Nome: $nome, Cognome: $cognome, Scuola: $scuola, Citta: $citta, Tipo: $tipos, Email: $email");
+    if ($_SERVER["HTTP_REFERER"] == "http://localhost/Login/Community/login.html")
+        echo("Correttamente loggato come:<br>Nome: $nome, Cognome: $cognome, Scuola: $scuola, Citta: $citta, Tipo: $tipos, Email: $email");
+    $_SESSION["email"] = $email;
+    $_SESSION["password"] = $password;
+    $_SESSION["tipo"] = $tipo;
+    $_SESSION["keyu"] = $row_utente["keyu"];
 
     echo("<form action='insert_document.php' method='post'>");
-    echo("<input type='text' hidden value='$row_utente[keyu]' name='keyu'>");
+    /*echo("<input type='text' hidden value='$row_utente[keyu]' name='keyu'>");
     echo("<input type='text' hidden value='$tipo' name='tipo'>");
     echo("<input type='text' hidden value='$email' name='email'>");
-    echo("<input type='text' hidden value='$password' name='password'>");
+    echo("<input type='text' hidden value='$password' name='password'>");*/
     echo("<input type='submit' value='Upload Documento'>");
     echo("</form>");
 }
 ?>
-
 <form action="index.html">
     <input type="submit" value="Home">
 </form>
-
-
 </body>
 </html>

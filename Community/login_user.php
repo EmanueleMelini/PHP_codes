@@ -1,5 +1,6 @@
 <?php
 require 'community_connect.php';
+session_start();
 
 $query_login = "select * from utenti";
 $email = $_POST['email'];
@@ -16,19 +17,22 @@ if(!$queryresult_login) {
         if ($email == $row_login['email'] && $password == $row_login['password']) {
             $login = true;
         }
-
         $row_login = $queryresult_login->fetch_array();
     }
 
     if($login) {
+        $_SESSION["email"] = $email;
+        $_SESSION["password"] = $password;
+        header("Location: http://localhost/Login/Community/hub.php");
+        /*
         echo ("login effettuato correttamente");
         echo ("<form action='hub.php' method='post'>");
         echo ("<input type='email' hidden name='email' value='$email'>");
         echo ("<input type='password' hidden name='password' value='$password'>");
         echo ("<input type='submit' value='Vai alla Hub'>");
-        echo ("</form>");
+        echo ("</form>");*/
     } else {
-        echo("<Credenziali errate");
+        echo("Credenziali errate");
         echo ("<form action='login.html'>");
         echo ("<input type='submit' value='Torna al Login'>");
         echo ("</form>");
