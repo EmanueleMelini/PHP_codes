@@ -30,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="prenotazioni_camere.php">
         Prenota Camere&nbsp;<input type="submit" value="Vai">
     </form>
+    <form action="visual_prenotazioni_soggiorni.php">
+        Visualizza Prenotazioni Soggiorni&nbsp;<input type="submit" value="Vai">
+    </form>
     <br><br><br>
     <form action="" method="post">
         Logout&nbsp;<input type="submit" value="Vai">
