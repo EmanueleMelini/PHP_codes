@@ -6,7 +6,7 @@ $prezzo = $_POST['prezzo'];
 #$queryeliminaprenotazione = "DELETE FROM PrenCibi WHERE idPrenCibi = '$idprencibi'";
 $queryeliminaprenotazione = "UPDATE PrenCibi SET Eliminato = 1 WHERE idPrenCibi = '$idprencibi'";
 $queryeliminaprenotazione_result = $conn->query($queryeliminaprenotazione);
-if(!$queryeliminaprenotazione_result) {
+if (!$queryeliminaprenotazione_result) {
     echo("Errore nella query");
 } else {
     $_SESSION['totprezzo'] = $_SESSION['totprezzo'] - $prezzo;

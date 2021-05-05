@@ -8,16 +8,16 @@ $dataoggi = date("Y-m-d");
 $oraoggi = date("H:i");
 $tavolo = $_POST['tavolo'];
 $tipo = $_POST['tipo'];
-for($i = 0; $i < count($listaidarray); $i++) {
-    if($tipo == "pizze")  {
-    $queryprenotazione = "INSERT INTO PrenCibi(idPizza, idCLiente, DataPren, Ora, Tavolo, OraPren)
+for ($i = 0; $i < count($listaidarray); $i++) {
+    if ($tipo == "pizze") {
+        $queryprenotazione = "INSERT INTO PrenCibi(idPizza, idCLiente, DataPren, Ora, Tavolo, OraPren)
 VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$tavolo', '$orapren')";
-} else {
+    } else {
         $queryprenotazione = "INSERT INTO PrenCibi(idPiattoTipico, idCLiente, DataPren, Ora, Tavolo, OraPren)
 VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$tavolo', '$orapren')";
     }
     $queryprenotazione_result = $conn->query($queryprenotazione);
-    if(!$queryprenotazione_result) {
+    if (!$queryprenotazione_result) {
         echo("Errore nella query $i");
     }
 }

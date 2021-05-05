@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo("Lista dell'ordine:<br>");
 
-    for($i = 0; $i < count($listaidarray); $i++) {
+    for ($i = 0; $i < count($listaidarray); $i++) {
         echo("Nome: $listanomiarray[$i]<br>");
     }
 
@@ -40,7 +40,7 @@ if ($querymenu_result->num_rows == 0) {
     while ($row_menu != null) {
         $prezzoi = "prezzo" . $i;
         $idi = "id" . $i;
-        $nomei = "nome". $i;
+        $nomei = "nome" . $i;
         echo("Nome:&nbsp;<input type='text' name='Nome' id='$nomei' value='$row_menu[Nome]' readonly>");
         echo("&nbsp;Prezzo:&nbsp;<input type='number' name='Prezzo' id='$prezzoi' value='$row_menu[Prezzo]' readonly>  euro");
         echo("<input type='hidden' name='id' id='$idi' value='$row_menu[idPizze]'>");

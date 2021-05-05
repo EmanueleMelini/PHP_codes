@@ -11,14 +11,14 @@ $dataoggi = date("Y-m-d");
 $oraoggi = date("H:i");
 $querycamere = "SELECT * FROM Camere";
 $querycamere_result = $conn->query($querycamere);
-if(!$querycamere_result) {
+if (!$querycamere_result) {
     echo("Errore nella query");
 } else {
     $i = 0;
     $row_camere = $querycamere_result->fetch_array();
-    while($row_camere != null) {
-        $prezzoi = "prezzo". $i;
-        $numeroi = "numero". $i;
+    while ($row_camere != null) {
+        $prezzoi = "prezzo" . $i;
+        $numeroi = "numero" . $i;
         echo("Numero camera:&nbsp;<input type='number' id='$numeroi' name='numero' value='$row_camere[Numero]' readonly>&nbsp;");
         echo("Prezzo camera:&nbsp;<input type='number' id='$prezzoi' name='prezzo' value='$row_camere[Prezzo]' readonly>&nbsp");
         echo("Massimo persone per camera:&nbsp;<input type='number' name='maxpersone' value='$row_camere[MaxPersone]' readonly>&nbsp;");
