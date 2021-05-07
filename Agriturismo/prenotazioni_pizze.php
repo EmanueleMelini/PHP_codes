@@ -55,7 +55,7 @@ if ($querymenu_result->num_rows == 0) {
     Prezzo totale:&nbsp;<input type="number" name="totprezzo" id="totprezzo" readonly>
     <input type="text" name="listaid" id="listaid" hidden>
     <input type="text" name="listanomi" id="listanomi" hidden>
-    <br>Orario desiderato&nbsp;<input type="text" name="orapren" placeholder="Orario desiderato">
+    <br>Orario desiderato&nbsp;<input type="time" name="orapren" placeholder="Orario desiderato">
     <br>Tavolo&nbsp;<input type="number" name="tavolo" placeholder="Numero Tavolo">
     <br><input type="submit" value="Ordina">
 </form>

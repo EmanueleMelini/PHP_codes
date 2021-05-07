@@ -10,13 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $numero= $_POST['numero'];
     $prezzo = $_POST['prezzo'];
 
-    echo("Vuoi cancellare davvero la prenotazione della camera numero: $numero?");
     echo("
 <form action='cancella_prenotazione_soggiorno.php' method='post'>
-    <input type='submit' value='Elimina'>
+    Vuoi cancellare davvero la prenotazione della camera numero: $numero?&nbsp;<input type='submit' value='Elimina'>
     <input type='hidden' name='idprensoggiorni' value='$idprensoggiorni'>
     <input type='hidden' name='prezzo' value='$prezzo'>
 </form>");
+    echo("<form action='visual_prenotazioni_soggiorni.php'>
+    <br>Torna alla visualizzazione delle prenotazioni&nbsp;<input type='submit' value='Vai'>
+");
 } else {
     $queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, MaxPersone, idCliente, DataInizio, DataFine 
 FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere 
@@ -26,22 +28,26 @@ WHERE DataInizio >= '$dataoggi' and Eliminato = 0 and idCliente = $_SESSION[idCl
         echo("Errore nella query");
     } else {
         $totprezzo = 0;
-        echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br>");
+        echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]");
+        echo("<table border='1'>");
         $row_prenotazioni = $queryprenotazioni_result->fetch_array();
         while ($row_prenotazioni != null) {
             $totprezzo = $totprezzo + $row_prenotazioni['Prezzo'];
-            echo("Numero camera: $row_prenotazioni[Numero]");
-            echo(".&nbsp;&nbsp;Data inizio prenotazione: $row_prenotazioni[DataInizio].&nbsp;&nbsp;Data fine prenotazione: $row_prenotazioni[DataFine].&nbsp;&nbsp;Prezzo: $row_prenotazioni[Prezzo].<br>");
+            echo("<tr><td>Numero camera: $row_prenotazioni[Numero]</td>");
+            echo("<td>Data inizio prenotazione: $row_prenotazioni[DataInizio]</td>");
+            echo("<td>Data fine prenotazione: $row_prenotazioni[DataFine]</td>");
+            echo("<td>Prezzo: $row_prenotazioni[Prezzo]</td>");
             echo("<form action='' method='post'>
 <input type='hidden' name='prezzo' value='$row_prenotazioni[Prezzo]'>
 <input type='hidden' name='numero' value='$row_prenotazioni[Numero]'>
 <input type='hidden' name='idprensoggiorni' value='$row_prenotazioni[idPrenSoggiorni]'>
-Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></form><br><br>");
+<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></form></td></tr><br><br>");
             $row_prenotazioni = $queryprenotazioni_result->fetch_array();
         }
+        echo("</table><br>");
         echo("Per un totale di $totprezzo euro");
         $_SESSION['totprezzo'] = $totprezzo;
-        echo("<br><form action='cancella_tutte_prenotazioni_soggiorni.php'>Cancella Tutto&nbsp;<input type='submit' value='Cancella'></form>");
+        echo("<br><br><form action='cancella_tutte_prenotazioni_soggiorni.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
     }
 }
 ?>

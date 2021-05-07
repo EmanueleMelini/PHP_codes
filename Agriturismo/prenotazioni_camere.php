@@ -46,7 +46,19 @@ if (!$querycamere_result) {
         echo("Prezzo camera:&nbsp;<input type='number' id='$prezzoi' name='prezzo' value='$row_camere[Prezzo]' readonly>&nbsp");
         echo("<input type='hidden' name='id' id='$idi' value='$row_camere[idCamere]'>");
         echo("Massimo persone per camera:&nbsp;<input type='number' name='maxpersone' value='$row_camere[MaxPersone]' readonly>&nbsp;");
-        echo("<input type='button' value='Ordina' onclick='addCamera($i)'><br>");
+        $querycamereordinate = "SELECT * FROM PrenSoggiorni WHERE Eliminato = 0 AND idCamera = '$row_camere[idCamere]'";
+        $querycamereordinate_result = $conn->query($querycamereordinate);
+        if(!$querycamereordinate_result) {
+            echo("Errore nella query");
+        } else {
+            $row_camereordinate = $querycamereordinate_result->fetch_array();
+            if($querycamereordinate_result->num_rows == 0) {
+                echo("<input type='button' value='Ordina' onclick='addCamera($i)'><br>");
+            } else {
+                echo("<input type='button' value='Ordinata' onclick='cameraOrdinata()'><br>");
+            }
+        }
+
         $row_camere = $querycamere_result->fetch_array();
         $i++;
     }
@@ -54,12 +66,12 @@ if (!$querycamere_result) {
 ?>
 <br>
 <form action="" method="post">
-    Prezzo totale:&nbsp;<input type="number" name="totprezzo" id="totprezzo" readonly>
     <input type="text" name="listaid" id="listaid" hidden>
     <input type="text" name="listanum" id="listanum" hidden>
     <br>Data inizio prenotazione&nbsp;<input type="date" name="datainiziopren">
     <br>Data fine prenotazione&nbsp;<input type="date" name="datafinepren">
-    <br><input type="submit" value="Ordina">
+    <br><br>Prezzo totale:&nbsp;<input type="number" name="totprezzo" id="totprezzo" readonly>
+    <input type="submit" value="Effettua Ordine">
 </form>
 <br><br>
 <form action="portale.php">
@@ -71,18 +83,30 @@ if (!$querycamere_result) {
     var prezzo = 0;
     var listaid = [];
     var listanum = [];
+    var listacamereordinatesessione = [];
+
     document.getElementById('totprezzo').value = prezzo;
 
     function addCamera(i) {
         var prezzoi = "prezzo" + i;
         var idi = "id" + i;
         var numeroi = "numero" + i;
-        prezzo = prezzo + parseInt(document.getElementById(prezzoi).value);
-        document.getElementById('totprezzo').value = prezzo;
-        listaid.push(document.getElementById(idi).value);
-        listanum.push(document.getElementById(numeroi).value);
-        document.getElementById('listaid').value = listaid;
-        document.getElementById('listanum').value = listanum;
+        var idcamera = document.getElementById(idi).value;
+        if(listacamereordinatesessione.indexOf(idcamera) === -1) {
+            prezzo = prezzo + parseInt(document.getElementById(prezzoi).value);
+            document.getElementById('totprezzo').value = prezzo;
+            listaid.push(idcamera);
+            listanum.push(document.getElementById(numeroi).value);
+            document.getElementById('listaid').value = listaid;
+            document.getElementById('listanum').value = listanum;
+            listacamereordinatesessione.push(idcamera);
+        } else {
+            alert("Puoi ordinare solo una volta una stanza!");
+        }
+    }
+
+    function cameraOrdinata() {
+        alert("Camera già ordinata da un altro cliente!");
     }
 </script>
 </html>

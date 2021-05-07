@@ -18,6 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="visual_menu_pizze.php">
         Visualizza il Menu delle pizze&nbsp;<input type="submit" value="Vai">
     </form>
+    <form action="visual_escursioni.php">
+        Visualizza le escursioni&nbsp;<input type="submit" value="Vai">
+    </form>
+    <form action="visual_attivitaippiche.php">
+        Visualizza le attività ippiche&nbsp;<input type="submit" value="Vai">
+    </form>
     <form action="prenotazioni_piattitipici.php">
         Prenota piatti tipici&nbsp;<input type="submit" value="Vai">
     </form>
