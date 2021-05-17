@@ -9,16 +9,12 @@ require 'agriturismo_connect.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $totprezzo = $_POST['totprezzo'];
-    $_SESSION['totprezzo'] = $totprezzo;
-    $orapren = $_POST['orapren'];
+    $datapren = $_POST['datapren'];
     $listaid = $_POST['listaid'];
     $listanomi = $_POST['listanomi'];
+    $guida = $_POST['guida'];
     $listaidarray = explode(",", $listaid);
     $listanomiarray = explode(",", $listanomi);
-    $tavolo = $_POST['tavolo'];
-    $dataoggi = date("Y-m-d");
-    $oraoggi = date("H:i");
 
     echo("Lista dell'ordine:<br>");
 
@@ -27,7 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo("Confermare l'ordine?");
-    echo("<form action='prenotazioni_cibi.php' method='post'><input type='text' value='$orapren' name='orapren' hidden><input type='hidden' name='tavolo' value='$tavolo'><input type='text' name='listaid' value='$listaid' hidden><input type='hidden' name='tipo' value='tipici'><input type='submit' value='Conferma'></form>");
+    echo("<form action='prenotazioni_cibi.php' method='post'>
+<input type='text' value='$datapren' name='datapren' hidden>
+<input type='text' value='$listaid' name='listaid' hidden>
+<input type='text' name='tipo' value='tipici' hidden>
+<input type='submit' value='Conferma'>
+</form>");
 
 } else {
 $queryescursioni = "SELECT * FROM Escursioni";
@@ -42,10 +43,20 @@ if ($queryescursioni_result->num_rows == 0) {
         $prezzoi = "prezzo" . $i;
         $idi = "id" . $i;
         $nomei = "nome" . $i;
+        $guidai = "guida" . $i;
         echo("Nome:&nbsp;<input type='text' name='Nome' id='$nomei' value='$row_escursioni[Nome]' readonly>");
-        echo("&nbsp;Prezzo:&nbsp;<input type='number' name='Prezzo' id='$prezzoi' value='$row_escursioni[Prezzo]' readonly>  euro");
-        echo("<input type='hidden' name='id' id='$idi' value='$row_escursioni[idPiattiTipici]'>");
-        echo("&nbsp;<input type='button' value='Aggiungi' onclick='addPiatto($i)'><br>");
+        echo("&nbsp;Meta:&nbsp;<input type='text' name='Meta' value='$row_escursioni[Meta]' readonly>");
+        echo("<input type='hidden' name='id' id='$idi' value='$row_escursioni[idEscursioni]'>");
+        echo("<select name='guidas' id='$guidai'><option value='-1'> - </option>");
+
+        $queryguide = "SELECT * FROM Guide";
+        $queryguide_result = $conn->query($queryguide);
+        $row_guide = $queryguide_result->fetch_array();
+        while($row_guide != null) {
+            echo("<option value='$row_guide[idGuide]'>$row_guide[Nome] $row_guide[Cognome]</option>");
+            $row_guide = $queryguide_result->fetch_array();
+        }
+        echo("</select>&nbsp;<input type='button' value='Aggiungi' onclick='addEscursione($i)'><br>");
         $row_escursioni = $queryescursioni_result->fetch_array();
         $i++;
     }
@@ -54,11 +65,11 @@ if ($queryescursioni_result->num_rows == 0) {
 </table>
 <br>
 <form action="" method="post">
-    Prezzo totale:&nbsp;<input type="number" name="totprezzo" id="totprezzo" readonly>
+    Numero Escursioni:&nbsp;<input type="number" name="numesc" id="numesc" readonly>
     <input type="text" name="listaid" id="listaid" hidden>
     <input type="text" name="listanomi" id="listanomi" hidden>
-    <br>Orario desiderato&nbsp;<input type="time" name="orapren" placeholder="Orario desiderato">
-    <br>Tavolo&nbsp;<input type="number" name="tavolo" placeholder="Numero Tavolo">
+    <input type="text" name="guida" id="guida" hidden>
+    <br>Data desiderato&nbsp;<input type="date" name="orapren">
     <br><input type="submit" value="Ordina">
 </form>
 <br><br>
@@ -68,21 +79,25 @@ if ($queryescursioni_result->num_rows == 0) {
 </body>
 
 <script type="text/javascript">
-    var prezzo = 0;
     var listaid = [];
     var listanomi = [];
-    document.getElementById('totprezzo').value = prezzo;
+    var num = 0;
 
-    function addPiatto(i) {
-        var prezzoi = "prezzo" + i;
+    function addEscursione(i) {
         var idi = "id" + i;
         var nomei = "nome" + i;
-        prezzo = prezzo + parseInt(document.getElementById(prezzoi).value);
-        document.getElementById('totprezzo').value = prezzo;
-        listaid.push(document.getElementById(idi).value);
-        listanomi.push(document.getElementById(nomei).value);
-        document.getElementById('listaid').value = listaid;
-        document.getElementById('listanomi').value = listanomi;
+        var guidai = "guida" + i;
+        //TODO:  correggere errore;
+        if(document.getElementById('guidai').value === "-1") {
+            alert("Scegli una guida!");
+        } else {
+            listaid.push(document.getElementById(idi).value);
+            listanomi.push(document.getElementById(nomei).value);
+            document.getElementById('listaid').value = listaid;
+            document.getElementById('listanomi').value = listanomi;
+            num++;
+            document.getElementById('numesc').value = num;
+        }
     }
 </script>
 </html>

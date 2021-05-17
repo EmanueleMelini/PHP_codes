@@ -39,6 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="visual_prenotazioni_soggiorni.php">
         Visualizza Prenotazioni Soggiorni&nbsp;<input type="submit" value="Vai">
     </form>
+    <form action="prenotazioni_escursioni.php">
+        Prenota Escursioni&nbsp;<input type="submit" value="Vai">
+    </form>
     <br><br><br>
     <form action="" method="post">
         Logout&nbsp;<input type="submit" value="Vai">
