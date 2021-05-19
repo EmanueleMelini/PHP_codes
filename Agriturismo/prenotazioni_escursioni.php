@@ -4,7 +4,6 @@
 </head>
 <body>
 <?php
-//TODO:Modificare la pagina per le escursioni e resto
 require 'agriturismo_connect.php';
 session_start();
 
@@ -12,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datapren = $_POST['datapren'];
     $listaid = $_POST['listaid'];
     $listanomi = $_POST['listanomi'];
-    $guida = $_POST['guida'];
+    $listaguide = $_POST['listaguide'];
     $listaidarray = explode(",", $listaid);
     $listanomiarray = explode(",", $listanomi);
 
@@ -23,9 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo("Confermare l'ordine?");
-    echo("<form action='prenotazioni_cibi.php' method='post'>
+    echo("<form action='conf_prenotazioni_escursioni.php' method='post'>
 <input type='text' value='$datapren' name='datapren' hidden>
 <input type='text' value='$listaid' name='listaid' hidden>
+<input type='text' value='$listaguide' name='listaguide' hidden>
 <input type='text' name='tipo' value='tipici' hidden>
 <input type='submit' value='Conferma'>
 </form>");
@@ -68,8 +68,8 @@ if ($queryescursioni_result->num_rows == 0) {
     Numero Escursioni:&nbsp;<input type="number" name="numesc" id="numesc" readonly>
     <input type="text" name="listaid" id="listaid" hidden>
     <input type="text" name="listanomi" id="listanomi" hidden>
-    <input type="text" name="guida" id="guida" hidden>
-    <br>Data desiderato&nbsp;<input type="date" name="orapren">
+    <input type="text" name="listaguide" id="listaguide" hidden>
+    <br>Data desiderato&nbsp;<input type="date" name="datapren">
     <br><input type="submit" value="Ordina">
 </form>
 <br><br>
@@ -81,22 +81,32 @@ if ($queryescursioni_result->num_rows == 0) {
 <script type="text/javascript">
     var listaid = [];
     var listanomi = [];
+    var listaguide = [];
     var num = 0;
+    var listaescursioniordinate = [];
 
     function addEscursione(i) {
         var idi = "id" + i;
         var nomei = "nome" + i;
         var guidai = "guida" + i;
+        var idescursione = document.getElementById(idi).value;
         //TODO:  correggere errore;
-        if(document.getElementById('guidai').value === "-1") {
+        if(document.getElementById(guidai).value === "-1") {
             alert("Scegli una guida!");
         } else {
-            listaid.push(document.getElementById(idi).value);
-            listanomi.push(document.getElementById(nomei).value);
-            document.getElementById('listaid').value = listaid;
-            document.getElementById('listanomi').value = listanomi;
-            num++;
-            document.getElementById('numesc').value = num;
+            if(listaescursioniordinate.indexOf(idescursione) === -1) {
+                listaid.push(document.getElementById(idi).value);
+                listanomi.push(document.getElementById(nomei).value);
+                listaguide.push(document.getElementById(guidai).value);
+                document.getElementById('listaid').value = listaid;
+                document.getElementById('listanomi').value = listanomi;
+                document.getElementById('listaguide').value = listaguide;
+                num++;
+                document.getElementById('numesc').value = num;
+                listaescursioniordinate.push(idescursione);
+            } else {
+                alert("Escursione già ordinata!");
+            }
         }
     }
 </script>
