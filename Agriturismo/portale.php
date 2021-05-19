@@ -42,6 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="prenotazioni_escursioni.php">
         Prenota Escursioni&nbsp;<input type="submit" value="Vai">
     </form>
+    <form action="visual_prenotazioni_escursioni.php">
+        Visualizza Prenotazioni Escursioni&nbsp;<input type="submit" value="Vai">
+    </form>
+    <form action="prenotazioni_attivitaippiche.php">
+        Prenota Attività Ippiche&nbsp;<input type="submit" value="Vai">
+    </form>
+    <form action="visual_prenotazioni_attivitaippiche.php">
+        Visualizza Prenotazioni Attività Ippiche&nbsp;<input type="submit" value="Vai">
+    </form>
     <br><br><br>
     <form action="" method="post">
         Logout&nbsp;<input type="submit" value="Vai">
