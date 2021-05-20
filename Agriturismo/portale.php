@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+//TODO:Controllare se si puo sapere se una pagina è aperta manualmente
+// array_key_exist("HTTP_REFERER", $_SERVER);
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_destroy();
     header("Location: http://localhost/Login/Agriturismo/hub.html");
