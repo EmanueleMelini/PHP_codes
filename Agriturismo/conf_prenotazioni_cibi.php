@@ -6,26 +6,26 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_start();
     $listaid = $_POST['listaid'];
     $listaidarray = explode(",", $listaid);
-    $datapren = $_POST['datapren'];
-    $orainizio = $_POST['orainizio'];
-    $orafine = $_POST['orafine'];
+    $orapren = $_POST['orapren'];
     $dataoggi = date("Y-m-d");
     $oraoggi = date("H:i");
-    $listaaddettiippica = $_POST['listaaddettiippica'];
-    $listaaddettiippicaarray = explode(",", $listaaddettiippica);
-    $f = true;
+    $tavolo = $_POST['tavolo'];
+    $tipo = $_POST['tipo'];
     for ($i = 0; $i < count($listaidarray); $i++) {
-        $queryprenotazione = "INSERT INTO PrenAttivita(idAttivita, idCliente, DataP, OraP, DataA, OraInizio, OraFine, idAddetto)
-VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$datapren', '$orainizio', '$orafine', '$listaaddettiippicaarray[$i]')";
-
+        if ($tipo == "pizze") {
+            $queryprenotazione = "INSERT INTO PrenCibi(idPizza, idCLiente, DataPren, Ora, Tavolo, OraPren)
+VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$tavolo', '$orapren')";
+        } else {
+            $queryprenotazione = "INSERT INTO PrenCibi(idPiattoTipico, idCLiente, DataPren, Ora, Tavolo, OraPren)
+VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$tavolo', '$orapren')";
+        }
         $queryprenotazione_result = $conn->query($queryprenotazione);
         if (!$queryprenotazione_result) {
             echo("Errore nella query $i");
-            $f = false;
         }
     }
-    if ($f)
-        echo("Ordine prenotato correttamente");
+
+    echo("Ordine prenotato correttamente");
 }
 ?>
 <form action="portale.php">

@@ -1,13 +1,17 @@
 <?php
-require 'agriturismo_connect.php';
-session_start();
-$idprenattivitaippiche = $_POST['idprenattivitaippiche'];
-$queryeliminaprenotazione = "UPDATE PrenAttivita SET Eliminato = 1 WHERE idPrenAttivita = '$idprenattivitaippiche'";
-$queryeliminaprenotazione_result = $conn->query($queryeliminaprenotazione);
-if (!$queryeliminaprenotazione_result) {
-    echo("Errore nella query");
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
-    echo("Prenotazione cancellata correttamente");
+    require 'agriturismo_connect.php';
+    session_start();
+    $idprenattivitaippiche = $_POST['idprenattivitaippiche'];
+    $queryeliminaprenotazione = "UPDATE PrenAttivita SET Eliminato = 1 WHERE idPrenAttivita = '$idprenattivitaippiche'";
+    $queryeliminaprenotazione_result = $conn->query($queryeliminaprenotazione);
+    if (!$queryeliminaprenotazione_result) {
+        echo("Errore nella query");
+    } else {
+        echo("Prenotazione cancellata correttamente");
+    }
 }
 ?>
 <html>

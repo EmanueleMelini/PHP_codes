@@ -4,18 +4,22 @@
 </head>
 <body>
 <?php
-require 'agriturismo_connect.php';
-session_start();
-$querymenu = "SELECT * FROM PiattiTipici";
-$querymenu_result = $conn->query($querymenu);
-if ($querymenu_result->num_rows == 0) {
-    echo("Nessun piatto tipico nel menu");
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
-    echo("<table border='1'><tr><td>Nome Piatto</td><td>Descrizione Piatto</td><td>Prezzo Piatto</td></tr><tr>");
-    $row_menu = $querymenu_result->fetch_array();
-    while ($row_menu != null) {
-        echo("<td>$row_menu[Nome]</td><td>$row_menu[Descrizione]</td><td>$row_menu[Prezzo] euro</td></tr>");
+    require 'agriturismo_connect.php';
+    session_start();
+    $querymenu = "SELECT * FROM PiattiTipici";
+    $querymenu_result = $conn->query($querymenu);
+    if ($querymenu_result->num_rows == 0) {
+        echo("Nessun piatto tipico nel menu");
+    } else {
+        echo("<table border='1'><tr><td>Nome Piatto</td><td>Descrizione Piatto</td><td>Prezzo Piatto</td></tr><tr>");
         $row_menu = $querymenu_result->fetch_array();
+        while ($row_menu != null) {
+            echo("<td>$row_menu[Nome]</td><td>$row_menu[Descrizione]</td><td>$row_menu[Prezzo] euro</td></tr>");
+            $row_menu = $querymenu_result->fetch_array();
+        }
     }
 }
 ?>

@@ -4,6 +4,9 @@
 </head>
 <body>
 <?php
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
+} else {
 require 'agriturismo_connect.php';
 session_start();
 
@@ -112,5 +115,6 @@ if ($queryescursioni_result->num_rows == 0) {
 </script>
 </html>
 <?php
+}
 }
 ?>

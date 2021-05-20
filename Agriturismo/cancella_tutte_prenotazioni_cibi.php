@@ -3,6 +3,9 @@
     <title>Cancellazione tutte Prenotazioni</title>
 </head>
 <?php
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
+} else {
 require 'agriturismo_connect.php';
 session_start();
 
@@ -32,4 +35,5 @@ if (!$queryeliminaprenotazione_result) {
 <form action='' method='post'>
     <input type='submit' value='Elimina'>
 </form>");
+}
 }

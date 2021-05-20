@@ -4,6 +4,9 @@
 </head>
 <body>
 <?php
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
+} else {
 require 'agriturismo_connect.php';
 session_start();
 
@@ -26,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo("Confermare l'ordine?");
-    echo("<form action='prenotazioni_cibi.php' method='post'><input type='text' value='$orapren' name='orapren' hidden><input type='hidden' name='tavolo' value='$tavolo'><input type='text' name='listaid' value='$listaid' hidden><input type='hidden' name='tipo' value='pizze'><input type='submit' value='Conferma'></form>");
+    echo("<form action='conf_prenotazioni_cibi.php' method='post'><input type='text' value='$orapren' name='orapren' hidden><input type='hidden' name='tavolo' value='$tavolo'><input type='text' name='listaid' value='$listaid' hidden><input type='hidden' name='tipo' value='pizze'><input type='submit' value='Conferma'></form>");
 
 } else {
 $querymenu = "SELECT * FROM Pizze";
@@ -85,5 +88,6 @@ if ($querymenu_result->num_rows == 0) {
 </script>
 </html>
 <?php
+}
 }
 ?>

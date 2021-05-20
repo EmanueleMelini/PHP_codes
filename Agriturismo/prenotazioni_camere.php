@@ -4,6 +4,9 @@
 </head>
 <body>
 <?php
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
+} else {
 require 'agriturismo_connect.php';
 session_start();
 
@@ -41,18 +44,18 @@ if (!$querycamere_result) {
     while ($row_camere != null) {
         $prezzoi = "prezzo" . $i;
         $numeroi = "numero" . $i;
-        $idi = "id". $i;
+        $idi = "id" . $i;
         echo("Numero camera:&nbsp;<input type='number' id='$numeroi' name='numero' value='$row_camere[Numero]' readonly>&nbsp;");
         echo("Prezzo camera:&nbsp;<input type='number' id='$prezzoi' name='prezzo' value='$row_camere[Prezzo]' readonly>&nbsp");
         echo("<input type='hidden' name='id' id='$idi' value='$row_camere[idCamere]'>");
         echo("Massimo persone per camera:&nbsp;<input type='number' name='maxpersone' value='$row_camere[MaxPersone]' readonly>&nbsp;");
         $querycamereordinate = "SELECT * FROM PrenSoggiorni WHERE Eliminato = 0 AND idCamera = '$row_camere[idCamere]'";
         $querycamereordinate_result = $conn->query($querycamereordinate);
-        if(!$querycamereordinate_result) {
+        if (!$querycamereordinate_result) {
             echo("Errore nella query");
         } else {
             $row_camereordinate = $querycamereordinate_result->fetch_array();
-            if($querycamereordinate_result->num_rows == 0) {
+            if ($querycamereordinate_result->num_rows == 0) {
                 echo("<input type='button' value='Ordina' onclick='addCamera($i)'><br>");
             } else {
                 echo("<input type='button' value='Ordinata' onclick='cameraOrdinata()'><br>");
@@ -92,7 +95,7 @@ if (!$querycamere_result) {
         var idi = "id" + i;
         var numeroi = "numero" + i;
         var idcamera = document.getElementById(idi).value;
-        if(listacamereordinatesessione.indexOf(idcamera) === -1) {
+        if (listacamereordinatesessione.indexOf(idcamera) === -1) {
             prezzo = prezzo + parseInt(document.getElementById(prezzoi).value);
             document.getElementById('totprezzo').value = prezzo;
             listaid.push(idcamera);
@@ -111,5 +114,6 @@ if (!$querycamere_result) {
 </script>
 </html>
 <?php
+}
 }
 ?>

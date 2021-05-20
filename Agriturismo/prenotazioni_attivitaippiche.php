@@ -4,7 +4,9 @@
 </head>
 <body>
 <?php
-//TODO: cambiare la pagina per le attivita ippiche
+if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
+    header("Location: http://localhost/Login/Agriturismo/hub.html");
+} else {
 require 'agriturismo_connect.php';
 session_start();
 
@@ -55,7 +57,7 @@ if ($queryattivitaippiche_result->num_rows == 0) {
         $queryaddettiippica = "SELECT * FROM AddettiIppica";
         $queryaddettiippica_result = $conn->query($queryaddettiippica);
         $row_addettiippica = $queryaddettiippica_result->fetch_array();
-        while($row_addettiippica != null) {
+        while ($row_addettiippica != null) {
             echo("<option value='$row_addettiippica[idAddettiIppica]'>$row_addettiippica[Nome] $row_addettiippica[Cognome]</option>");
             $row_addettiippica = $queryaddettiippica_result->fetch_array();
         }
@@ -96,10 +98,10 @@ if ($queryattivitaippiche_result->num_rows == 0) {
         var addettoi = "addetto" + i;
         var idattivitaippica = document.getElementById(idi).value;
         //TODO:  correggere errore;
-        if(document.getElementById(addettoi).value === "-1") {
+        if (document.getElementById(addettoi).value === "-1") {
             alert("Scegli un addetto ippica!");
         } else {
-            if(listaattivitaordinate.indexOf(idattivitaippica) === -1) {
+            if (listaattivitaordinate.indexOf(idattivitaippica) === -1) {
                 listaid.push(document.getElementById(idi).value);
                 listanomi.push(document.getElementById(nomei).value);
                 listaaddettiippica.push(document.getElementById(addettoi).value);
@@ -117,5 +119,6 @@ if ($queryattivitaippiche_result->num_rows == 0) {
 </script>
 </html>
 <?php
+}
 }
 ?>
