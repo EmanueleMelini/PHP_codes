@@ -2,7 +2,8 @@
 session_start();
 
 //TODO:Controllare se si puo sapere se una pagina è aperta manualmente
-// array_key_exist("HTTP_REFERER", $_SERVER);
+// array_key_exist("HTTP_REFERER", $_SERVER)
+// fare la parte dei lavoratori
 
 
 

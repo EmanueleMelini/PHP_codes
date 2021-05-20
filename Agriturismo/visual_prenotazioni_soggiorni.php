@@ -28,26 +28,30 @@ WHERE DataInizio >= '$dataoggi' and Eliminato = 0 and idCliente = $_SESSION[idCl
         echo("Errore nella query");
     } else {
         $totprezzo = 0;
-        echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]");
-        echo("<table border='1'>");
-        $row_prenotazioni = $queryprenotazioni_result->fetch_array();
-        while ($row_prenotazioni != null) {
-            $totprezzo = $totprezzo + $row_prenotazioni['Prezzo'];
-            echo("<tr><td>Numero camera: $row_prenotazioni[Numero]</td>");
-            echo("<td>Data inizio prenotazione: $row_prenotazioni[DataInizio]</td>");
-            echo("<td>Data fine prenotazione: $row_prenotazioni[DataFine]</td>");
-            echo("<td>Prezzo: $row_prenotazioni[Prezzo]</td>");
-            echo("<form action='' method='post'>
+        echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+        if ($queryprenotazioni_result->num_rows === 0) {
+            echo("Nessuna prenotazione attiva");
+        } else {
+            echo("<table border='1'>");
+            $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+            while ($row_prenotazioni != null) {
+                $totprezzo = $totprezzo + $row_prenotazioni['Prezzo'];
+                echo("<tr><td>Numero camera: $row_prenotazioni[Numero]</td>");
+                echo("<td>Data inizio prenotazione: $row_prenotazioni[DataInizio]</td>");
+                echo("<td>Data fine prenotazione: $row_prenotazioni[DataFine]</td>");
+                echo("<td>Prezzo: $row_prenotazioni[Prezzo]</td>");
+                echo("<form action='' method='post'>
 <input type='hidden' name='prezzo' value='$row_prenotazioni[Prezzo]'>
 <input type='hidden' name='numero' value='$row_prenotazioni[Numero]'>
 <input type='hidden' name='idprensoggiorni' value='$row_prenotazioni[idPrenSoggiorni]'>
 <td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></form></td></tr><br><br>");
-            $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+                $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+            }
+            echo("</table><br>");
+            echo("Per un totale di $totprezzo euro");
+            $_SESSION['totprezzo'] = $totprezzo;
+            echo("<br><br><form action='cancella_tutte_prenotazioni_soggiorni.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
         }
-        echo("</table><br>");
-        echo("Per un totale di $totprezzo euro");
-        $_SESSION['totprezzo'] = $totprezzo;
-        echo("<br><br><form action='cancella_tutte_prenotazioni_soggiorni.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
     }
 }
 ?>

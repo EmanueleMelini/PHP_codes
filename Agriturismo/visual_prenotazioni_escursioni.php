@@ -24,23 +24,27 @@ WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Guide.idGuide = 
         echo("Errore nella query");
     } else {
         echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-        echo("<table border='1'>");
-        $row_prenotazioni = $queryprenotazioni_result->fetch_array();
-        while ($row_prenotazioni != null) {
-            echo("<tr>");
-            echo("<td>Nome Escursione: $row_prenotazioni[Nomees]</td>");
-            echo("<td>Meta: $row_prenotazioni[Meta]</td>");
-            echo("<td>Guida: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
-            echo("<td>Data Prenotazione: $row_prenotazioni[DataE]</td>");
-            echo("<form action='' method='post'>");
-            echo("<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td>");
-            echo("<input type='hidden' name='idprenescursioni' value='$row_prenotazioni[idPrenEscursioni]'>");
-            echo("<input type='hidden' name='nome' value='$row_prenotazioni[Nomees]'></form>");
-            echo("</tr>");
+        if ($queryprenotazioni_result->num_rows === 0) {
+            echo("Nessuna prenotazione attiva");
+        } else {
+            echo("<table border='1'>");
             $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+            while ($row_prenotazioni != null) {
+                echo("<tr>");
+                echo("<td>Nome Escursione: $row_prenotazioni[Nomees]</td>");
+                echo("<td>Meta: $row_prenotazioni[Meta]</td>");
+                echo("<td>Guida: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
+                echo("<td>Data Prenotazione: $row_prenotazioni[DataE]</td>");
+                echo("<form action='' method='post'>");
+                echo("<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td>");
+                echo("<input type='hidden' name='idprenescursioni' value='$row_prenotazioni[idPrenEscursioni]'>");
+                echo("<input type='hidden' name='nome' value='$row_prenotazioni[Nomees]'></form>");
+                echo("</tr>");
+                $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+            }
+            echo("</table>");
+            echo("<br><br><form action='cancella_tutte_prenotazioni_escursioni.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
         }
-        echo("</table>");
-        echo("<br><br><form action='cancella_tutte_prenotazioni_escursioni.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
     }
 }
 ?>

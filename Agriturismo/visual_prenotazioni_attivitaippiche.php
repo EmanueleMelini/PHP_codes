@@ -1,7 +1,6 @@
 <?php
 require 'agriturismo_connect.php';
 session_start();
-//TODO: finire la cancellazione delle attività ippiche
 $dataoggi = date("Y-m-d");
 $oraoggi = date("H:i");
 
@@ -11,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo("Vuoi cancellare davvero la prenotazione di: $nome?");
     echo("
-<form action='cancella_prenotazione_escursione.php' method='post'>
+<form action='cancella_prenotazione_attivitaippica.php' method='post'>
     <input type='submit' value='Elimina'>
     <input type='hidden' name='idprenattivitaippiche' value='$idprenattivitaippiche'>
 </form>");
@@ -24,23 +23,27 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idPrenAttivita AND Addett
         echo("Errore nella query");
     } else {
         echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-        echo("<table border='1'>");
-        $row_prenotazioni = $queryprenotazioni_result->fetch_array();
-        while ($row_prenotazioni != null) {
-            echo("<tr>");
-            echo("<td>Nome Attivita: $row_prenotazioni[Nomeatt]</td>");
-            echo("<td>Nome Cavallo: $row_prenotazioni[NomeCavallo]</td>");
-            echo("<td>Addetto: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
-            echo("<td>Data Prenotazione: $row_prenotazioni[DataA]</td>");
-            echo("<form action='' method='post'>");
-            echo("<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td>");
-            echo("<input type='hidden' name='idprenattivitaippiche' value='$row_prenotazioni[idPrenAttivita]'>");
-            echo("<input type='hidden' name='nome' value='$row_prenotazioni[Nomeatt]'></form>");
-            echo("</tr>");
+        if ($queryprenotazioni_result->num_rows === 0) {
+            echo("Nessuna prenotazione attiva");
+        } else {
+            echo("<table border='1'>");
             $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+            while ($row_prenotazioni != null) {
+                echo("<tr>");
+                echo("<td>Nome Attivita: $row_prenotazioni[Nomeatt]</td>");
+                echo("<td>Nome Cavallo: $row_prenotazioni[NomeCavallo]</td>");
+                echo("<td>Addetto: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
+                echo("<td>Data Prenotazione: $row_prenotazioni[DataA]</td>");
+                echo("<form action='' method='post'>");
+                echo("<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td>");
+                echo("<input type='hidden' name='idprenattivitaippiche' value='$row_prenotazioni[idPrenAttivita]'>");
+                echo("<input type='hidden' name='nome' value='$row_prenotazioni[Nomeatt]'></form>");
+                echo("</tr>");
+                $row_prenotazioni = $queryprenotazioni_result->fetch_array();
+            }
+            echo("</table>");
+            echo("<br><br><form action='cancella_tutte_prenotazioni_attivitaippiche.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
         }
-        echo("</table>");
-        echo("<br><br><form action=''>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
     }
 }
 ?>
