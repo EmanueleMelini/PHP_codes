@@ -52,11 +52,11 @@ if ($queryescursioni_result->num_rows == 0) {
         echo("<input type='hidden' name='id' id='$idi' value='$row_escursioni[idEscursioni]'>");
         echo("<select name='guidas' id='$guidai'><option value='-1'> - </option>");
 
-        $queryguide = "SELECT * FROM Guide";
+        $queryguide = "SELECT * FROM Dipendenti WHERE idMansione = 3";
         $queryguide_result = $conn->query($queryguide);
         $row_guide = $queryguide_result->fetch_array();
         while($row_guide != null) {
-            echo("<option value='$row_guide[idGuide]'>$row_guide[Nome] $row_guide[Cognome]</option>");
+            echo("<option value='$row_guide[idDipendenti]'>$row_guide[Nome] $row_guide[Cognome]</option>");
             $row_guide = $queryguide_result->fetch_array();
         }
         echo("</select>&nbsp;<input type='button' value='Aggiungi' onclick='addEscursione($i)'><br>");
@@ -93,7 +93,6 @@ if ($queryescursioni_result->num_rows == 0) {
         var nomei = "nome" + i;
         var guidai = "guida" + i;
         var idescursione = document.getElementById(idi).value;
-        //TODO:  correggere errore;
         if(document.getElementById(guidai).value === "-1") {
             alert("Scegli una guida!");
         } else {

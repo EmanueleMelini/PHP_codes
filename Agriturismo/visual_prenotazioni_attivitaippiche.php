@@ -18,9 +18,9 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     <input type='hidden' name='idprenattivitaippiche' value='$idprenattivitaippiche'>
 </form>");
     } else {
-        $queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, AddettiIppica.Nome, Cognome 
-FROM PrenAttivita, AttivitaIppiche, AddettiIppica
-WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idPrenAttivita AND AddettiIppica.idAddettiIppica = PrenAttivita.idPrenAttivita AND DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
+        $queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, Dipendenti.Nome, Cognome 
+FROM PrenAttivita, AttivitaIppiche, Dipendenti
+WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idPrenAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
         $queryprenotazioni_result = $conn->query($queryprenotazioni);
         if (!$queryprenotazioni_result) {
             echo("Errore nella query");

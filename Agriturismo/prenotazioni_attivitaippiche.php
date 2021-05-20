@@ -54,11 +54,11 @@ if ($queryattivitaippiche_result->num_rows == 0) {
         echo("<input type='hidden' name='id' id='$idi' value='$row_attivitaippiche[idAttivitaIppiche]'>");
         echo("<select name='addettos' id='$addettoi'><option value='-1'> - </option>");
 
-        $queryaddettiippica = "SELECT * FROM AddettiIppica";
+        $queryaddettiippica = "SELECT * FROM Dipendenti WHERE idMansione = 2";
         $queryaddettiippica_result = $conn->query($queryaddettiippica);
         $row_addettiippica = $queryaddettiippica_result->fetch_array();
         while ($row_addettiippica != null) {
-            echo("<option value='$row_addettiippica[idAddettiIppica]'>$row_addettiippica[Nome] $row_addettiippica[Cognome]</option>");
+            echo("<option value='$row_addettiippica[idDipendenti]'>$row_addettiippica[Nome] $row_addettiippica[Cognome]</option>");
             $row_addettiippica = $queryaddettiippica_result->fetch_array();
         }
         echo("</select>&nbsp;<input type='button' value='Aggiungi' onclick='addEscursione($i)'><br>");
@@ -97,7 +97,6 @@ if ($queryattivitaippiche_result->num_rows == 0) {
         var nomei = "nome" + i;
         var addettoi = "addetto" + i;
         var idattivitaippica = document.getElementById(idi).value;
-        //TODO:  correggere errore;
         if (document.getElementById(addettoi).value === "-1") {
             alert("Scegli un addetto ippica!");
         } else {

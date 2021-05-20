@@ -1,7 +1,4 @@
 <?php
-if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
-    header("Location: http://localhost/Login/Agriturismo/hub.html");
-} else {
 require 'agriturismo_connect.php';
 
 
@@ -52,6 +49,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </html>
 
     <?php
-}
 }
 ?>
