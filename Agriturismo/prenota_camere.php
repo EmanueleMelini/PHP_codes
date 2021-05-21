@@ -17,6 +17,12 @@ VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$datainiziopren', '$datafin
         $queryprenotazione_result = $conn->query($queryprenotazione);
         if (!$queryprenotazione_result) {
             echo("Errore nella query $i");
+        } else {
+            $querycamera = "UPDATE Camere SET Ordinata = 1 where idCamere = $listaidarray[$i]";
+            $querycamera_result = $conn->query($querycamera);
+            if(!$querycamera_result) {
+                echo("Errore nella query $i");
+            }
         }
     }
 

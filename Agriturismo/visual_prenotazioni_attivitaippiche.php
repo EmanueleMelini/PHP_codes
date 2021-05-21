@@ -1,3 +1,8 @@
+<html>
+<head>
+    <title>Visualizza Prenotazioni</title>
+</head>
+<body>
 <?php
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     header("Location: http://localhost/Login/Agriturismo/hub.html");
@@ -6,6 +11,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_start();
     $dataoggi = date("Y-m-d");
     $oraoggi = date("H:i");
+
+    if ($_SESSION['Tipo'] === "Cliente") {
+        $utente = "Cliente";
+    } else {
+        $utente = "Dipendente";
+    }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idprenattivitaippiche = $_POST['idprenattivitaippiche'];
@@ -18,14 +29,25 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     <input type='hidden' name='idprenattivitaippiche' value='$idprenattivitaippiche'>
 </form>");
     } else {
-        $queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, Dipendenti.Nome, Cognome 
+        if ($utente == "Cliente") {
+            $queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, Dipendenti.Nome, Cognome 
 FROM PrenAttivita, AttivitaIppiche, Dipendenti
-WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idPrenAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
+WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
+        } else {
+            $queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
+FROM PrenAttivita, AttivitaIppiche, Dipendenti, Clienti
+WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND PrenAttivita.idCLiente = Clienti.idCLienti AND DataA >= '$dataoggi' AND Eliminato = 0";
+        }
+
         $queryprenotazioni_result = $conn->query($queryprenotazioni);
         if (!$queryprenotazioni_result) {
             echo("Errore nella query");
         } else {
-            echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+            if($utente === "Cliente") {
+                echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+            } else {
+                echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+            }
             if ($queryprenotazioni_result->num_rows === 0) {
                 echo("Nessuna prenotazione attiva");
             } else {
@@ -37,6 +59,9 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idPrenAttivita AND Dipend
                     echo("<td>Nome Cavallo: $row_prenotazioni[NomeCavallo]</td>");
                     echo("<td>Addetto: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
                     echo("<td>Data Prenotazione: $row_prenotazioni[DataA]</td>");
+                    if($utente === "Dipendente") {
+                        echo("<td>Cliente: $row_prenotazioni[NomeC] $row_prenotazioni[CognomeC]</td>");
+                    }
                     echo("<form action='' method='post'>");
                     echo("<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td>");
                     echo("<input type='hidden' name='idprenattivitaippiche' value='$row_prenotazioni[idPrenAttivita]'>");
@@ -49,15 +74,14 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idPrenAttivita AND Dipend
             }
         }
     }
+    if ($utente == "Cliente") {
+        echo("<form action='portale.php'>");
+    } else {
+        echo("<form action='portaledip.php'>");
+    }
 }
 ?>
-<html>
-<head>
-    <title>Visualizza Prenotazioni</title>
-</head>
-<body>
-<form action="portale.php">
-    <br>Torna al portale&nbsp;<input type="submit" value="Vai">
+<br>Torna al portale&nbsp;<input type="submit" value="Vai">
 </form>
 </body>
 </html>

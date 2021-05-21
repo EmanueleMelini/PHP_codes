@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['Telefono'] = $row_login['Telefono'];
         $_SESSION['Indirizzo'] = $row_login['Indirizzo'];
         $_SESSION['Citta'] = $row_login['Citta'];
+        $_SESSION['Tipo'] = "Cliente";
         header("Location: http://localhost/Login/Agriturismo/portale.php");
     } else {
         echo("Email o password non corrette");
