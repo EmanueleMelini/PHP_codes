@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo("Confermare l'ordine?");
-    echo("<form action='prenota_camere.php' method='post'><input type='text' value='$datainiziopren' name='datainiziopren' hidden><input type='hidden' name='datafinepren' value='$datafinepren'><input type='text' name='listaid' value='$listaid' hidden><input type='submit' value='Conferma'></form>");
+    echo("<form action='conf_prenotazioni_camere.php' method='post'><input type='text' value='$datainiziopren' name='datainiziopren' hidden><input type='hidden' name='datafinepren' value='$datafinepren'><input type='text' name='listaid' value='$listaid' hidden><input type='submit' value='Conferma'></form>");
 
 } else {
 $dataoggi = date("Y-m-d");

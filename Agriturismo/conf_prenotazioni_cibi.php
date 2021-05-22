@@ -13,10 +13,10 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     $tipo = $_POST['tipo'];
     for ($i = 0; $i < count($listaidarray); $i++) {
         if ($tipo == "pizze") {
-            $queryprenotazione = "INSERT INTO PrenCibi(idPizza, idCLiente, DataPren, Ora, Tavolo, OraPren)
+            $queryprenotazione = "INSERT INTO PrenCibi(idPizza, idCLiente, DataP, OraP, Tavolo, OraC)
 VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$tavolo', '$orapren')";
         } else {
-            $queryprenotazione = "INSERT INTO PrenCibi(idPiattoTipico, idCLiente, DataPren, Ora, Tavolo, OraPren)
+            $queryprenotazione = "INSERT INTO PrenCibi(idPiattoTipico, idCLiente, DataP, OraP, Tavolo, OraC)
 VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$tavolo', '$orapren')";
         }
         $queryprenotazione_result = $conn->query($queryprenotazione);

@@ -12,8 +12,8 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     $dataoggi = date("Y-m-d");
     $oraoggi = date("H:i");
     for ($i = 0; $i < count($listaidarray); $i++) {
-        $queryprenotazione = "INSERT INTO PrenSoggiorni(idCamera, idCliente, DataInizio, DataFine, DataIns, OraIns)
-VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$datainiziopren', '$datafinepren', '$dataoggi', '$oraoggi')";
+        $queryprenotazione = "INSERT INTO PrenSoggiorni(idCamera, idCliente, DataP, OraP, DataInizio, DataFine)
+VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$datainiziopren', '$datafinepren')";
         $queryprenotazione_result = $conn->query($queryprenotazione);
         if (!$queryprenotazione_result) {
             echo("Errore nella query $i");
