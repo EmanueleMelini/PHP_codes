@@ -34,7 +34,6 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$idprenattivitaippiche = $_POST['idprenattivitaippiche'];
 		$nome = $_POST['nome'];
-
 		echo("Vuoi cancellare davvero la prenotazione di: $nome?");
 		?>
 		<form action="cancella_prenotazione_attivitaippica.php" method="post">
@@ -52,7 +51,6 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 FROM PrenAttivita, AttivitaIppiche, Dipendenti, Clienti
 WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND PrenAttivita.idCLiente = Clienti.idCLienti AND DataA >= '$dataoggi' AND Eliminato = 0";
 		}
-
 		$queryprenotazioni_result = $conn->query($queryprenotazioni);
 		if (!$queryprenotazioni_result) {
 			echo("Errore nella query");
@@ -82,7 +80,6 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 								<td>Cliente: <?= $row_prenotazioni['NomeC'] . " " . $row_prenotazioni['CognomeC'] ?></td>
 								<?php
 							}
-
 							if ($utente == "Cliente" || $utente == "Amministratore") {
 								if ($row_prenotazioni['Accettato'] == 0) {
 									?>
@@ -127,7 +124,6 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 				<?php
 			}
 		}
-
 	}
 	?>
 	<form action="<?= $urlportale ?>">
