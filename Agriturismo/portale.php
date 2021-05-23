@@ -11,43 +11,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || !array_key_exists("HTTP_REFERER", $
         <title>Portale Agriturismo</title>
     </head>
     <body>
-    <form action="visual_menu_piattitipici.php">
+    <form action="Ristorante/visual_menu_piattitipici.php">
         <br>Visualizza il Menu dei piatti tipici&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_menu_pizze.php">
+    <form action="Ristorante/visual_menu_pizze.php">
         Visualizza il Menu delle pizze&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_escursioni.php">
+    <form action="Escursioni/visual_escursioni.php">
         Visualizza le escursioni&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_attivitaippiche.php">
+    <form action="AttivitaIppiche/visual_attivitaippiche.php">
         Visualizza le attività ippiche&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="prenotazioni_piattitipici.php">
+    <form action="Ristorante/prenotazioni_piattitipici.php">
         Prenota piatti tipici&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="prenotazioni_pizze.php">
+    <form action="Ristorante/prenotazioni_pizze.php">
         Prenota Pizze&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_prenotazioni_cibi.php">
+    <form action="Ristorante/visual_prenotazioni_cibi.php">
         Visualizza Prenotazioni Cibi&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="prenotazioni_camere.php">
+    <form action="Camere/prenotazioni_camere.php">
         Prenota Camere&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_prenotazioni_soggiorni.php">
+    <form action="Camere/visual_prenotazioni_soggiorni.php">
         Visualizza Prenotazioni Soggiorni&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="prenotazioni_escursioni.php">
+    <form action="Escursioni/prenotazioni_escursioni.php">
         Prenota Escursioni&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_prenotazioni_escursioni.php">
+    <form action="Escursioni/visual_prenotazioni_escursioni.php">
         Visualizza Prenotazioni Escursioni&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="prenotazioni_attivitaippiche.php">
+    <form action="AttivitaIppiche/prenotazioni_attivitaippiche.php">
         Prenota Attività Ippiche&nbsp;<input type="submit" value="Vai">
     </form>
-    <form action="visual_prenotazioni_attivitaippiche.php">
+    <form action="AttivitaIppiche/visual_prenotazioni_attivitaippiche.php">
         Visualizza Prenotazioni Attività Ippiche&nbsp;<input type="submit" value="Vai">
     </form>
     <br><br><br>
