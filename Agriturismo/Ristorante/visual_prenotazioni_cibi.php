@@ -4,6 +4,7 @@
 </head>
 <body>
 <?php
+//TODO: mettere accettazione
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -45,16 +46,16 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     <input type='hidden' name='prezzo' value='$prezzo'>
 </form>");
 	} else {
-		if ($utente === "Cliente") {
-			$queryprenotazioni = "select idPrenCibi, idCLiente, DataPren, OraPren, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza
+		if ($utente == "Cliente") {
+			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza
 from (prencibi left outer join piattitipici on prencibi.idPiattoTipico = piattitipici.idPiattiTipici)
 left outer join pizze on pizze.idPizze = prencibi.idPizza 
-where Datapren >= '$dataoggi' and OraPren >= '$oraoggi' and Eliminato = 0 and idCliente = $_SESSION[idCliente]";
+where Datap >= '$dataoggi' and OraP >= '$oraoggi' and Eliminato = 0 and idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "select idPrenCibi, idCLiente, DataPren, OraPren, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
+			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
 from (prencibi left outer join piattitipici on prencibi.idPiattoTipico = piattitipici.idPiattiTipici)
 left outer join pizze on pizze.idPizze = prencibi.idPizza inner join Clienti on PrenCibi.idCLiente = Clienti.idCLienti
-where Datapren >= '$dataoggi' and OraPren >= '$oraoggi' and Eliminato = 0";
+where Datap >= '$dataoggi' and OraP >= '$oraoggi' and Eliminato = 0";
 		}
 		$queryprenotazioni_result = $conn->query($queryprenotazioni);
 		if (!$queryprenotazioni_result) {
@@ -63,9 +64,11 @@ where Datapren >= '$dataoggi' and OraPren >= '$oraoggi' and Eliminato = 0";
 			$totprezzo = 0;
 			if ($utente === "Cliente") {
 				echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-			} else {
-				echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-			}
+			} else if($utente == "Dipendente"){
+                echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+            } else {
+                echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+            }
 			if ($queryprenotazioni_result->num_rows === 0) {
 				echo("Nessuna prenotazione attiva");
 			} else {

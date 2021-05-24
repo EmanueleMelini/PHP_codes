@@ -1,6 +1,9 @@
 <?php
-//TODO: Finire gli inserimenti
+//TODO:
 // mettere on delete set null nelle table
+// controllare errore sql inserimento '
+// sistemare la visualizzazione html con chiusura dei tag php
+// creare query che elimina le prenotazioni con data attuale maggiore
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' || !array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_destroy();

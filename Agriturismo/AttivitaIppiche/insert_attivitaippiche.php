@@ -48,7 +48,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		<?php
 	}
 	?>
-	<form action="<?= $urlportale ?>p">
+	<form action="<?= $urlportale ?>">
 		Torna al portale&nbsp;<input type="submit" value="Vai">
 	</form>
 	<?php

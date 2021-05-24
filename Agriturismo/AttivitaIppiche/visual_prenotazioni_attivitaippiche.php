@@ -4,6 +4,7 @@
 </head>
 <body>
 <?php
+//TODO: mettere accettazione
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -57,9 +58,11 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 		} else {
 			if ($utente == "Cliente") {
 				echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-			} else {
+			} else if($utente == "Dipendente"){
 				echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-			}
+			} else {
+                echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+            }
 			if ($queryprenotazioni_result->num_rows === 0) {
 				echo("Nessuna prenotazione attiva");
 			} else {
