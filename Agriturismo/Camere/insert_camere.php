@@ -15,21 +15,41 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $numero = $_POST['numero'];
         $prezzo = $_POST['prezzo'];
-        $maxpersone = $_POST['maxpersone'];
-        echo("Vuoi inserire davvero la camera numero $numero, prezzo $prezzo e massimo persone $maxpersone?");
-        echo("
-<form action='conf_insert_camere.php' method='post'>
-    <input type='submit' value='Inserisci'>
-    <input type='text' name='numero' value='$numero' hidden>
-    <input type='text' name='prezzo' value='$prezzo' hidden>
-    <input type='text' name='maxpersone' value='$maxpersone' hidden>
-</form>");
+        $tipicamere = $_POST['tipicamere'];
+        echo("Vuoi inserire davvero la camera numero $numero, prezzo $prezzo e tipo $tipicamere?");
+        ?>
+<form action="conf_insert_camere.php" method="post">
+    <input type="submit" value="Inserisci">
+    <input type="text" name="numero" value="<?=$numero?>" hidden>
+    <input type="text" name="prezzo" value="<?=$prezzo?>" hidden>
+    <input type="text" name="tipicamere" value="<?=$tipicamere?>" hidden>
+</form>
+<?php
     } else {
         echo("Inserisci una camera:<br>");
         echo("<form method='post' action=''>");
         echo("<br>Numero:&nbsp;<input type='number' name='numero'>");
         echo("<br>Prezzo:&nbsp;<input type='number' name='prezzo'>");
-        echo("<br>Massimo Persone:&nbsp;<input type='number' name='maxpersone'>");
+		$querytipicamere = "SELECT * FROM TipiCamere";
+		$querytipicamere_result = $conn->query($querytipicamere);
+		if(!$querytipicamere_result) {
+			echo("Errore nella query");
+		} else {
+			$row_tipicamere = $querytipicamere_result->fetch_array();
+			?>
+			<select name="tipicamere">
+				<option value="-"> - </option>
+				<?php
+				while($row_tipicamere != null) {
+					?>
+					<option value="<?=$row_tipicamere['idTipiCamere']?>"><?=$row_tipicamere['Nome']?> - <?=$row_tipicamere['MaxPersone']?> persone</option>
+					<?php
+					$row_tipicamere = $querytipicamere_result->fetch_array();
+				}
+				?>
+			</select>
+			<?php
+		}
         echo("<br><input type='submit' value='Inserisci'></form>");
     }
 }

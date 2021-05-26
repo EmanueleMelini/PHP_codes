@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<?php
 	}
 } else {
-$querycamere = "SELECT * FROM Camere";
+$querycamere = "SELECT * FROM Camere INNER JOIN TipiCamere ON Camere.idTipoCamera = TipICamere.idTipiCamere ORDER BY Camere.idCamere";
 $querycamere_result = $conn->query($querycamere);
 if ($querycamere_result->num_rows == 0) {
 	echo("Nessuna Camera trovata");
@@ -57,19 +57,13 @@ if ($querycamere_result->num_rows == 0) {
 	<tr>
 		<td>Numero</td>
 		<td>Prezzo</td>
-		<td>Max Persone</td>
-		<td>Prenotata</td>
+		<td>Tipo Camera</td>
 	</tr>
 	<tr>
 		<?php
 		$row_camere = $querycamere_result->fetch_array();
 		while ($row_camere != null) {
-			echo("<td>$row_camere[Numero]</td><td>$row_camere[Prezzo]</td><td>$row_camere[MaxPersone]</td>");
-			if ($row_camere['Ordinata'] == 0) {
-				echo("<td>No</td>");
-			} else {
-				echo("<td>Si</td>");
-			}
+			echo("<td>$row_camere[Numero]</td><td>$row_camere[Prezzo]</td><td>$row_camere[Nome]</td>");
 			if($utente == "Amministratore") {
 				?>
 				<form method="post" action="">
@@ -79,6 +73,15 @@ if ($querycamere_result->num_rows == 0) {
 					</td>
 				</form>
 				<?php
+			} else if($utente == "Cliente") {
+				?>
+				<form method="post" action="prenotazioni_camere.php">
+					<td>
+						<input type="submit" value="Vai alla prenotazione">
+						<input type="text" name="idcamera" value="<?= $row_camere['idCamere'] ?>" hidden>
+					</td>
+				</form>
+		<?php
 			}
 			echo("</tr>");
 			$row_camere = $querycamere_result->fetch_array();
