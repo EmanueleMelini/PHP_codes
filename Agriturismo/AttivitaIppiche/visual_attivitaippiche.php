@@ -56,13 +56,14 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 			<table border="1">
 			<tr>
 				<td>Nome Escursione</td>
-				<td>Nome Cavallo</td>
+				<td>Ora Inizio</td>
+				<td>Ora Fine</td>
 			</tr>
 			<tr>
 			<?php
 			$row_menu = $queryattivitaippiche_result->fetch_array();
 			while ($row_menu != null) {
-				echo("<td>$row_menu[Nome]</td><td>$row_menu[NomeCavallo]</td>");
+				echo("<td>$row_menu[Nome]</td><td>$row_menu[OraInizio]</td><td>$row_menu[OraFine]</td>");
 				if ($utente == "Amministratore") {
 					?>
 					<form method="post" action="">

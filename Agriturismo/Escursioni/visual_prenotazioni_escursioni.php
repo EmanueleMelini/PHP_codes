@@ -5,6 +5,7 @@
 <body>
 <?php
 //TODO: mettere accettazione
+// mettere vecchie prenotazioni
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -13,6 +14,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 
 	$dataoggi = date("Y-m-d");
 	$oraoggi = date("H:i");
+
+    $queryeliminato = "UPDATE prenescursioni SET Eliminato = 1 WHERE DataE < '$dataoggi'";
+    $queryeliminato_result = $conn->query($queryeliminato);
+    if(!$queryeliminato_result) {
+        echo("Errore nella query!");
+    }
 
 	switch ($_SESSION['Tipo']) {
 		case "Cliente":

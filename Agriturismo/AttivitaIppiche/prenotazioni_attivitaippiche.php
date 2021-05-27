@@ -12,8 +12,6 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datapren = $_POST['datapren'];
-    $orainizio = $_POST['orainizio'];
-    $orafine = $_POST['orafine'];
     $listaid = $_POST['listaid'];
     $listanomi = $_POST['listanomi'];
     $listaaddettiippica = $_POST['listaaddettiippica'];
@@ -29,8 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo("Confermare l'ordine?");
     echo("<form action='conf_prenotazioni_attivita_ippiche.php' method='post'>
 <input type='text' value='$datapren' name='datapren' hidden>
-<input type='text' value='$orainizio' name='orainizio' hidden>
-<input type='text' value='$orafine' name='orafine' hidden>
 <input type='text' value='$listaid' name='listaid' hidden>
 <input type='text' value='$listaaddettiippica' name='listaaddettiippica' hidden>
 <input type='submit' value='Conferma'>
@@ -50,7 +46,8 @@ if ($queryattivitaippiche_result->num_rows == 0) {
         $nomei = "nome" . $i;
         $addettoi = "addetto" . $i;
         echo("Nome:&nbsp;<input type='text' name='Nome' id='$nomei' value='$row_attivitaippiche[Nome]' readonly>");
-        echo("&nbsp;Nome Cavallo:&nbsp;<input type='text' name='Meta' value='$row_attivitaippiche[NomeCavallo]' readonly>");
+        echo("&nbsp;Ora Inizio:&nbsp;<input type='text' name='OraInizio' value='$row_attivitaippiche[OraInizio]' readonly>");
+        echo("&nbsp;Ora Fine:&nbsp;<input type='text' name='OraFine' value='$row_attivitaippiche[OraFine]' readonly>");
         echo("<input type='hidden' name='id' id='$idi' value='$row_attivitaippiche[idAttivitaIppiche]'>");
         echo("<select name='addettos' id='$addettoi'><option value='-1'> - </option>");
 
@@ -75,8 +72,6 @@ if ($queryattivitaippiche_result->num_rows == 0) {
     <input type="text" name="listanomi" id="listanomi" hidden>
     <input type="text" name="listaaddettiippica" id="listaaddettiippica" hidden>
     <br>Data desiderata&nbsp;<input type="date" name="datapren">
-    <br>Ora inizio&nbsp;<input type="time" name="orainizio">
-    <br>Ora fine&nbsp;<input type="time" name="orafine">
     <br><input type="submit" value="Ordina">
 </form>
 <br><br>

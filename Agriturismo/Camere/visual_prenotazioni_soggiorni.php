@@ -5,6 +5,7 @@
 <body>
 <?php
 //TODO: mettere accettazione
+// mettere vecchie prenotazioni
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -13,6 +14,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 
 	$dataoggi = date("Y-m-d");
 	$oraoggi = date("H:i");
+
+	$queryeliminato = "UPDATE PrenSoggiorni SET Eliminato = 1 WHERE DataInizio < '$dataoggi'";
+	$queryeliminato_result = $conn->query($queryeliminato);
+	if(!$queryeliminato_result) {
+	    echo("Errore nella query!");
+    }
 
 	switch ($_SESSION['Tipo']) {
 		case "Cliente":
@@ -50,12 +57,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 ");
 	} else {
 		if ($utente === "Cliente") {
-			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, MaxPersone, idCliente, DataInizio, DataFine 
-FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere 
+			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, idCliente, DataInizio, DataFine, Nome as NomeT, MaxPersone 
+FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere INNER JOIN TipiCamere ON TipiCamere.idTipiCamere = Camere.idTipoCamera
 WHERE DataInizio >= '$dataoggi' and Eliminato = 0 and idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, MaxPersone, idCliente, DataInizio, DataFine, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
-FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere INNER JOIN Clienti on CLienti.idClienti = PrenSoggiorni.idCLiente
+			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, idCliente, DataInizio, DataFine, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, TipiCamere.Nome as NomeT, MaxPersone
+FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere INNER JOIN Clienti on CLienti.idClienti = PrenSoggiorni.idCLiente INNER JOIN TipiCamere ON TipiCamere.idTipiCamere = Camere.idTipoCamera
 WHERE Eliminato = 0";
 			//DataInizio >= '$dataoggi' and
 		}
@@ -82,6 +89,8 @@ WHERE Eliminato = 0";
 					echo("<td>Data inizio prenotazione: $row_prenotazioni[DataInizio]</td>");
 					echo("<td>Data fine prenotazione: $row_prenotazioni[DataFine]</td>");
 					echo("<td>Prezzo: $row_prenotazioni[Prezzo]</td>");
+					echo("<td>Nome: $row_prenotazioni[NomeT]</td>");
+					echo("<td>MaxPersone: $row_prenotazioni[MaxPersone]</td>");
 					if ($utente === "Dipendente") {
 						echo("<td>Cliente: $row_prenotazioni[NomeC] $row_prenotazioni[CognomeC]</td>");
 					}

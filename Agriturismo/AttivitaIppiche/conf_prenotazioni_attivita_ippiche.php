@@ -7,16 +7,14 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     $listaid = $_POST['listaid'];
     $listaidarray = explode(",", $listaid);
     $datapren = $_POST['datapren'];
-    $orainizio = $_POST['orainizio'];
-    $orafine = $_POST['orafine'];
     $dataoggi = date("Y-m-d");
     $oraoggi = date("H:i");
     $listaaddettiippica = $_POST['listaaddettiippica'];
     $listaaddettiippicaarray = explode(",", $listaaddettiippica);
     $f = true;
     for ($i = 0; $i < count($listaidarray); $i++) {
-        $queryprenotazione = "INSERT INTO PrenAttivita(idAttivita, idCliente, DataP, OraP, DataA, OraInizio, OraFine, idAddetto)
-VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$datapren', '$orainizio', '$orafine', '$listaaddettiippicaarray[$i]')";
+        $queryprenotazione = "INSERT INTO PrenAttivita(idAttivita, idCliente, DataP, OraP, DataA, idAddetto)
+VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$datapren', '$listaaddettiippicaarray[$i]')";
 
         $queryprenotazione_result = $conn->query($queryprenotazione);
         if (!$queryprenotazione_result) {

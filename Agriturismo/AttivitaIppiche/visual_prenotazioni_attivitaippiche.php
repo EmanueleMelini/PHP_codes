@@ -4,14 +4,20 @@
 </head>
 <body>
 <?php
-//TODO: mettere accettazione
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
 	require '../agriturismo_connect.php';
 	session_start();
+
 	$dataoggi = date("Y-m-d");
 	$oraoggi = date("H:i");
+
+    $queryeliminato = "UPDATE PrenAttivita SET Eliminato = 1 WHERE DataA < '$dataoggi'";
+    $queryeliminato_result = $conn->query($queryeliminato);
+    if(!$queryeliminato_result) {
+        echo("Errore nella query!");
+    }
 
 	switch ($_SESSION['Tipo']) {
 		case "Cliente":
@@ -44,11 +50,11 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		<?php
 	} else {
 		if ($utente == "Cliente") {
-			$queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, Dipendenti.Nome, Cognome, Accettato 
+			$queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, OraInizio, OraFine, Dipendenti.Nome, Cognome, Accettato 
 FROM PrenAttivita, AttivitaIppiche, Dipendenti
 WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, NomeCavallo, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Accettato
+			$queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, OraInizio, OraFine, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Accettato
 FROM PrenAttivita, AttivitaIppiche, Dipendenti, Clienti
 WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND PrenAttivita.idCLiente = Clienti.idCLienti AND DataA >= '$dataoggi' AND Eliminato = 0";
 		}
@@ -74,7 +80,8 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 						?>
 						<tr>
 							<td>Nome Attivita: <?= $row_prenotazioni['Nomeatt'] ?></td>
-							<td>Nome Cavallo: <?= $row_prenotazioni['NomeCavallo'] ?></td>
+							<td>Ora Inizio: <?= $row_prenotazioni['OraInizio'] ?></td>
+							<td>Ora Fine: <?= $row_prenotazioni['OraFine'] ?></td>
 							<td>Addetto: <?= $row_prenotazioni['Nome'] . " " . $row_prenotazioni['Cognome'] ?></td>
 							<td>Data Prenotazione: <?= $row_prenotazioni['DataA'] ?></td>
 							<?php
@@ -129,6 +136,9 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 		}
 	}
 	?>
+    <form action="visual_old_prenotazioni_attivitaippica.php">
+        <br>Visualizza vecchie prenotazioni&nbsp;<input type="submit" value="Vai">
+    </form>
 	<form action="<?= $urlportale ?>">
 		<br>Torna al portale&nbsp;<input type="submit" value="Vai">
 	</form>

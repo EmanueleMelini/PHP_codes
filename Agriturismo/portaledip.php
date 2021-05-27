@@ -1,9 +1,6 @@
 <?php
 //TODO:
-// controllare errore sql inserimento '
 // sistemare la visualizzazione html con chiusura dei tag php
-// creare query che elimina le prenotazioni con data attuale maggiore
-// cambiare sistema attività ippiche mettere fascia oraria prestabilita non inserimento
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' || !array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_destroy();

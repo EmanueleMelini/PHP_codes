@@ -3,14 +3,22 @@ require '../agriturismo_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['Nome'];
+    $nome = $conn->real_escape_string($nome);
     $cognome = $_POST['Cognome'];
+    $cognome = $conn->real_escape_string($cognome);
     $sesso = $_POST['Sesso'];
+    $sesso = $conn->real_escape_string($sesso);
     $datan = $_POST['DataN'];
     $telefono = $_POST['Telefono'];
+    $telefono = $conn->real_escape_string($telefono);
     $indirizzo = $_POST['Indirizzo'];
+    $indirizzo = $conn->real_escape_string($indirizzo);
     $citta = $_POST['Citta'];
+    $citta = $conn->real_escape_string($citta);
     $email = $_POST['Email'];
+    $email = $conn->real_escape_string($email);
     $password = $_POST['Password'];
+    $password = $conn->real_escape_string($password);
 
     $queryemailcheck = "SELECT * FROM Clienti WHERE '$email' = Email";
     $queryemailcheck_result = $conn->query($queryemailcheck);

@@ -4,7 +4,9 @@ require '../agriturismo_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['Email'];
+    $email = $conn->real_escape_string($email);
     $password = $_POST['Password'];
+    $password = $conn->real_escape_string($password);
 
     $querylogin = "SELECT * FROM Clienti WHERE '$email' = Email AND '$password' = Password";
     $querylogin_result = $conn->query($querylogin);
