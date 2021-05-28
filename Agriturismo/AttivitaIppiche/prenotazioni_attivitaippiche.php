@@ -45,9 +45,11 @@ if ($queryattivitaippiche_result->num_rows == 0) {
         $idi = "id" . $i;
         $nomei = "nome" . $i;
         $addettoi = "addetto" . $i;
+        $prezzoi = "prezzo". $i;
         echo("Nome:&nbsp;<input type='text' name='Nome' id='$nomei' value='$row_attivitaippiche[Nome]' readonly>");
         echo("&nbsp;Ora Inizio:&nbsp;<input type='text' name='OraInizio' value='$row_attivitaippiche[OraInizio]' readonly>");
         echo("&nbsp;Ora Fine:&nbsp;<input type='text' name='OraFine' value='$row_attivitaippiche[OraFine]' readonly>");
+        echo("&nbsp;Prezzo:&nbsp;<input type='text' name='Prezzo' id='$prezzoi' value='$row_attivitaippiche[Prezzo]' readonly>");
         echo("<input type='hidden' name='id' id='$idi' value='$row_attivitaippiche[idAttivitaIppiche]'>");
         echo("<select name='addettos' id='$addettoi'><option value='-1'> - </option>");
 

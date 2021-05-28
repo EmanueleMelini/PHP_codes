@@ -27,9 +27,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	}
 
 	$nome = $_POST['nome'];
-	$nomecavallo = $_POST['nomecavallo'];
+    $orainizio = $_POST['orainizio'];
+    $orafine = $_POST['orafine'];
+    $prezzo = $_POST['prezzo'];
 
-	$queryattivitaippicains = "INSERT INTO AttivitaIppiche(Nome, NomeCavallo) VALUES ('$nome', '$nomecavallo')";
+	$queryattivitaippicains = "INSERT INTO AttivitaIppiche(Nome, OraInizio, OraFine, Prezzo)
+VALUES ('$nome', '$orainizio', '$orafine', '$prezzo')";
 	$queryattivitaippicains_result = $conn->query($queryattivitaippicains);
 	if (!$queryattivitaippicains_result) {
 		echo("Errore nella query");

@@ -58,24 +58,25 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 				<td>Nome Escursione</td>
 				<td>Ora Inizio</td>
 				<td>Ora Fine</td>
+                <td>Prezzo</td>
 			</tr>
 			<tr>
 			<?php
-			$row_menu = $queryattivitaippiche_result->fetch_array();
-			while ($row_menu != null) {
-				echo("<td>$row_menu[Nome]</td><td>$row_menu[OraInizio]</td><td>$row_menu[OraFine]</td>");
+			$row_attivita = $queryattivitaippiche_result->fetch_array();
+			while ($row_attivita != null) {
+				echo("<td>$row_attivita[Nome]</td><td>$row_attivita[OraInizio]</td><td>$row_attivita[OraFine]</td><td>$row_attivita[Prezzo]</td>");
 				if ($utente == "Amministratore") {
 					?>
 					<form method="post" action="">
 						<td>
 							<input type="submit" value="Cancella">
-							<input type="text" name="idattivitaippiche" value="<?= $row_menu['idAttivitaIppiche'] ?>" hidden>
+							<input type="text" name="idattivitaippiche" value="<?= $row_attivita['idAttivitaIppiche'] ?>" hidden>
 						</td>
 					</form>
 					<?php
 				}
 				echo("</tr>");
-				$row_menu = $queryattivitaippiche_result->fetch_array();
+                $row_attivita = $queryattivitaippiche_result->fetch_array();
 			}
 		}
 		?>

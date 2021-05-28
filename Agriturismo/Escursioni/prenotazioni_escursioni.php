@@ -49,6 +49,7 @@ if ($queryescursioni_result->num_rows == 0) {
         $guidai = "guida" . $i;
         echo("Nome:&nbsp;<input type='text' name='Nome' id='$nomei' value='$row_escursioni[Nome]' readonly>");
         echo("&nbsp;Meta:&nbsp;<input type='text' name='Meta' value='$row_escursioni[Meta]' readonly>");
+        echo("&nbsp;Prezzo:&nbsp;<input type='text' name='Prezzo' id='$prezzoi' value='$row_escursioni[Prezzo]' readonly>");
         echo("<input type='hidden' name='id' id='$idi' value='$row_escursioni[idEscursioni]'>");
         echo("<select name='guidas' id='$guidai'><option value='-1'> - </option>");
 

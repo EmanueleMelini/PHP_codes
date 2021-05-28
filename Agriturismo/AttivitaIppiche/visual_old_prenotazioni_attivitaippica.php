@@ -40,9 +40,9 @@ $queryoldprenotazioni_result = $conn->query($queryoldprenotazioni);
 if (!$queryoldprenotazioni_result) {
     echo("Errore nella query");
 } else {
-    ?>
+?>
 Prenotazioni vecchie di <?= $_SESSION['Nome'] . " " . $_SESSION['Cognome'] ?>
-    <?php
+<?php
 if ($queryoldprenotazioni_result->num_rows == 0) {
     echo("<br>Nessuna prenotazione trovata");
 } else {
@@ -56,6 +56,7 @@ $row_oldprenotazioni = $queryoldprenotazioni_result->fetch_array();
             <td>Nome Attivita: <?= $row_oldprenotazioni['Nomeatt'] ?></td>
             <td>Ora Inizio: <?= $row_oldprenotazioni['OraInizio'] ?></td>
             <td>Ora Fine: <?= $row_oldprenotazioni['OraFine'] ?></td>
+            <td>Prezzo: <?= $row_oldprenotazioni['Prezzo'] ?></td>
             <td>Addetto: <?= $row_oldprenotazioni['Nome'] . " " . $row_oldprenotazioni['Cognome'] ?></td>
             <td>Data Prenotazione: <?= $row_oldprenotazioni['DataA'] ?></td>
         </tr>
@@ -71,5 +72,8 @@ $row_oldprenotazioni = $queryoldprenotazioni_result->fetch_array();
     <form action="<?= $urlportale ?>">
         <br>Torna al portale&nbsp;<input type="submit" value="Vai">
     </form>
-<?php
-}
+    <?php
+    }
+    ?>
+</body>
+</html>

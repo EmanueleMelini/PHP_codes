@@ -82,6 +82,7 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 							<td>Nome Attivita: <?= $row_prenotazioni['Nomeatt'] ?></td>
 							<td>Ora Inizio: <?= $row_prenotazioni['OraInizio'] ?></td>
 							<td>Ora Fine: <?= $row_prenotazioni['OraFine'] ?></td>
+							<td>Prezzo: <?= $row_prenotazioni['Prezzo'] ?></td>
 							<td>Addetto: <?= $row_prenotazioni['Nome'] . " " . $row_prenotazioni['Cognome'] ?></td>
 							<td>Data Prenotazione: <?= $row_prenotazioni['DataA'] ?></td>
 							<?php

@@ -82,6 +82,7 @@ WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDip
 					echo("<td>Meta: $row_prenotazioni[Meta]</td>");
 					echo("<td>Guida: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
 					echo("<td>Data Prenotazione: $row_prenotazioni[DataE]</td>");
+					echo("<td>Prezzo: $row_prenotazioni[Prezzo]</td>");
 					if ($utente === "Dipendente") {
 						echo("<td>Cliente: $row_prenotazioni[NomeC] $row_prenotazioni[CognomeC]</td>");
 					}

@@ -28,8 +28,9 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 
 	$nome = $_POST['nome'];
 	$meta = $_POST['meta'];
+	$prezzo = $_POST['prezzo'];
 
-	$queryescursioneins = "INSERT INTO Escursioni(Nome, Meta) VALUES ('$nome', '$meta')";
+	$queryescursioneins = "INSERT INTO Escursioni(Nome, Meta, Prezzo) VALUES ('$nome', '$meta', '$prezzo')";
 	$queryescursioneins_result = $conn->query($queryescursioneins);
 	if (!$queryescursioneins_result) {
 		echo("Errore nella query");

@@ -29,12 +29,14 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$nome = $_POST['nome'];
 		$meta = $_POST['meta'];
-		echo("Vuoi inserire davvero l'escursione di nome $nome e meta $meta?");
+		$prezzo = $_POST['prezzo'];
+		echo("Vuoi inserire davvero l'escursione di nome $nome, meta $meta e prezzo $prezzo euro?");
 		?>
 		<form action="conf_insert_escursioni.php" method="post">
 			<input type="submit" value="Inserisci">
 			<input type="text" name="nome" value="<?= $nome ?>" hidden>
 			<input type="text" name="meta" value="<?= $meta ?>" hidden>
+			<input type="text" name="prezzo" value="<?= $prezzo ?>" hidden>
 		</form>
 		<?php
 	} else {
@@ -43,6 +45,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		<form method="post" action="">
 			<br>Nome:&nbsp;<input type="text" name="nome">
 			<br>Meta:&nbsp;<input type="text" name="meta">
+			<br>Prezzo:&nbsp;<input type="text" name="prezzo">
 			<br><input type="submit" value="Inserisci">
 		</form>
 		<?php

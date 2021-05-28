@@ -59,23 +59,24 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 			<tr>
 				<td>Nome Escursione</td>
 				<td>Meta</td>
+                <td>Prezzo</td>
 			</tr><tr>
 			<?php
-			$row_menu = $queryescursioni_result->fetch_array();
-			while ($row_menu != null) {
-				echo("<td>$row_menu[Nome]</td><td>$row_menu[Meta]</td>");
+			$row_escursioni = $queryescursioni_result->fetch_array();
+			while ($row_escursioni != null) {
+				echo("<td>$row_escursioni[Nome]</td><td>$row_escursioni[Meta]</td><td>$row_escursioni[Prezzo]</td>");
 				if ($utente == "Amministratore") {
 					?>
 					<form method="post" action="">
 						<td>
 							<input type="submit" value="Cancella">
-							<input type="text" name="idescursioni" value="<?= $row_menu['idEscursioni'] ?>" hidden>
+							<input type="text" name="idescursioni" value="<?= $row_escursioni['idEscursioni'] ?>" hidden>
 						</td>
 					</form>
 					<?php
 				}
 				echo("</tr>");
-				$row_menu = $queryescursioni_result->fetch_array();
+                $row_escursioni = $queryescursioni_result->fetch_array();
 			}
 		}
 		?>
