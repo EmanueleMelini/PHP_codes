@@ -30,8 +30,8 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		$nome = $_POST['nome'];
 		$meta = $_POST['meta'];
 		$prezzo = $_POST['prezzo'];
-		echo("Vuoi inserire davvero l'escursione di nome $nome, meta $meta e prezzo $prezzo euro?");
 		?>
+        Vuoi inserire davvero l'escursione di nome <?=$nome?>, meta <?=$meta?> e prezzo <?=$prezzo?> euro?
 		<form action="conf_insert_escursioni.php" method="post">
 			<input type="submit" value="Inserisci">
 			<input type="text" name="nome" value="<?= $nome ?>" hidden>

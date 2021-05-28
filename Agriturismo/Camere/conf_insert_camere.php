@@ -10,7 +10,23 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
     session_start();
-	require '../agriturismo_connect.php';
+    require '../agriturismo_connect.php';
+
+    switch ($_SESSION['Tipo']) {
+        case "Cliente":
+            $urlportale = "../portale.php";
+            break;
+        case "Dipendente":
+            $urlportale = "../portaledip.php";
+            break;
+        case "Amministratore":
+            $urlportale = "../portaleadmin.php";
+            break;
+        default :
+            $urlportale = "../hub.html";
+            break;
+    }
+
     $numero = $_POST['numero'];
     $prezzo = $_POST['prezzo'];
     $maxpersone = $_POST['maxpersone'];
@@ -22,13 +38,13 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     } else {
         $row_camere = $querycamere_result->fetch_array();
         $f = false;
-        while($row_camere != null) {
-            if($numero === $row_camere['Numero']) {
+        while ($row_camere != null) {
+            if ($numero === $row_camere['Numero']) {
                 $f = true;
             }
             $row_camere = $querycamere_result->fetch_array();
         }
-        if(!$f) {
+        if (!$f) {
 
             $querycamerains = "INSERT INTO Camere(Numero, Prezzo, MaxPersone) VALUES ('$numero', '$prezzo', '$maxpersone')";
             $querycamerains_result = $conn->query($querycamerains);
@@ -42,13 +58,15 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
         }
 
     }
+    ?>
+    <form action="insert_camere.php">
+        <br>Torna all'inserimento delle Camere&nbsp;<input type="submit" value="Vai">
+    </form>
+    <form action="<?= $urlportale ?>">
+        Torna al portale&nbsp;<input type="submit" value="Vai">
+    </form>
+    <?php
 }
 ?>
-<form action="insert_camere.php">
-    <br>Torna all'inserimento delle Camere&nbsp;<input type="submit" value="Vai">
-</form>
-<form action="../portaledip.php">
-    Torna al portale&nbsp;<input type="submit" value="Vai">
-</form>
 </body>
 </html>

@@ -23,49 +23,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     for ($i = 0; $i < count($listaidarray); $i++) {
         echo("Nome: $listanomiarray[$i]<br>");
     }
-
-    echo("Confermare l'ordine?");
-    echo("<form action='conf_prenotazioni_attivita_ippiche.php' method='post'>
-<input type='text' value='$datapren' name='datapren' hidden>
-<input type='text' value='$listaid' name='listaid' hidden>
-<input type='text' value='$listaaddettiippica' name='listaaddettiippica' hidden>
-<input type='submit' value='Conferma'>
-</form>");
-
+    ?>
+    Confermare l'ordine?
+    <form action="conf_prenotazioni_attivita_ippiche.php" method="post">
+        <input type="text" value="<?= $datapren ?>" name="datapren" hidden>
+        <input type="text" value="<?= $listaid ?>" name="listaid" hidden>
+        <input type="text" value="<?= $listaaddettiippica ?>" name="listaaddettiippica" hidden>
+        <input type="submit" value="Conferma">
+    </form>
+    <?php
 } else {
 $queryattivitaippiche = "SELECT * FROM AttivitaIppiche";
 $queryattivitaippiche_result = $conn->query($queryattivitaippiche);
 if ($queryattivitaippiche_result->num_rows == 0) {
     echo("Nessuna attività ippica disponibile");
 } else {
-    echo("<form action='' method='post'>");
+?>
+<table border="1">
+    <?php
     $row_attivitaippiche = $queryattivitaippiche_result->fetch_array();
     $i = 0;
     while ($row_attivitaippiche != null) {
-        $idi = "id" . $i;
-        $nomei = "nome" . $i;
-        $addettoi = "addetto" . $i;
-        $prezzoi = "prezzo". $i;
-        echo("Nome:&nbsp;<input type='text' name='Nome' id='$nomei' value='$row_attivitaippiche[Nome]' readonly>");
-        echo("&nbsp;Ora Inizio:&nbsp;<input type='text' name='OraInizio' value='$row_attivitaippiche[OraInizio]' readonly>");
-        echo("&nbsp;Ora Fine:&nbsp;<input type='text' name='OraFine' value='$row_attivitaippiche[OraFine]' readonly>");
-        echo("&nbsp;Prezzo:&nbsp;<input type='text' name='Prezzo' id='$prezzoi' value='$row_attivitaippiche[Prezzo]' readonly>");
-        echo("<input type='hidden' name='id' id='$idi' value='$row_attivitaippiche[idAttivitaIppiche]'>");
-        echo("<select name='addettos' id='$addettoi'><option value='-1'> - </option>");
-
-        $queryaddettiippica = "SELECT * FROM Dipendenti WHERE idMansione = 2";
-        $queryaddettiippica_result = $conn->query($queryaddettiippica);
-        $row_addettiippica = $queryaddettiippica_result->fetch_array();
-        while ($row_addettiippica != null) {
-            echo("<option value='$row_addettiippica[idDipendenti]'>$row_addettiippica[Nome] $row_addettiippica[Cognome]</option>");
-            $row_addettiippica = $queryaddettiippica_result->fetch_array();
-        }
-        echo("</select>&nbsp;<input type='button' value='Aggiungi' onclick='addEscursione($i)'><br>");
+        ?>
+        <tr>
+            <?php
+            $idi = "id" . $i;
+            $nomei = "nome" . $i;
+            $addettoi = "addetto" . $i;
+            $prezzoi = "prezzo" . $i;
+            ?>
+            <td>&nbsp;Nome:&nbsp;<input type="text" name="Nome" id="<?= $nomei ?>" value="<?= $row_attivitaippiche['Nome'] ?>" readonly></td>
+            <td>&nbsp;Ora Inizio:&nbsp;<input type="text" name="OraInizio" value="<?= $row_attivitaippiche['OraInizio'] ?>" readonly></td>
+            <td>&nbsp;Ora Fine:&nbsp;<input type="text" name="OraFine" value="<?= $row_attivitaippiche['OraFine'] ?>" readonly></td>
+            <td>&nbsp;Prezzo:&nbsp;<input type="text" name="Prezzo" id="<?= $prezzoi ?>" value="<?= $row_attivitaippiche['Prezzo'] ?>" readonly></td>
+            <input type="hidden" name="id" id="<?= $idi ?>" value="<?= $row_attivitaippiche['idAttivitaIppiche'] ?>">
+            <td>&nbsp;Addetto:&nbsp;<select name="addettos" id="<?= $addettoi ?>">
+                    <option value='-1'> -</option>
+                    <?php
+                    $queryaddettiippica = "SELECT * FROM Dipendenti WHERE idMansione = 2";
+                    $queryaddettiippica_result = $conn->query($queryaddettiippica);
+                    $row_addettiippica = $queryaddettiippica_result->fetch_array();
+                    while ($row_addettiippica != null) {
+                        ?>
+                        <option value="<?= $row_addettiippica['idDipendenti'] ?>"><?= $row_addettiippica['Nome'] . " " . $row_addettiippica['Cognome'] ?></option>
+                        <?php
+                        $row_addettiippica = $queryaddettiippica_result->fetch_array();
+                    }
+                    ?>
+                </select></td>
+            <td>&nbsp;<input type="button" value="Aggiungi" onclick="addEscursione(<?= $i ?>)"><br></td>
+        </tr>
+        <?php
         $row_attivitaippiche = $queryattivitaippiche_result->fetch_array();
         $i++;
     }
-}
-?>
+    }
+    ?>
 </table>
 <br>
 <form action="" method="post">

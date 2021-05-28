@@ -1,9 +1,30 @@
+<html>
+<head>
+    <title>Conferma Prenotazione Attività Ippiche</title>
+</head>
+<body>
 <?php
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
-	require '../agriturismo_connect.php';
+    require '../agriturismo_connect.php';
     session_start();
+
+    switch ($_SESSION['Tipo']) {
+        case "Cliente":
+            $urlportale = "../portale.php";
+            break;
+        case "Dipendente":
+            $urlportale = "../portaledip.php";
+            break;
+        case "Amministratore":
+            $urlportale = "../portaleadmin.php";
+            break;
+        default :
+            $urlportale = "../hub.html";
+            break;
+    }
+
     $listaid = $_POST['listaid'];
     $listaidarray = explode(",", $listaid);
     $datapren = $_POST['datapren'];
@@ -24,8 +45,12 @@ VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$d
     }
     if ($f)
         echo("Ordine prenotato correttamente");
+    ?>
+    <form action="<?= $urlportale ?>">
+        Torna all'hub&nbsp;<input type="submit" value="Hub">
+    </form>
+    <?php
 }
 ?>
-<form action="../portale.php">
-    Torna all'hub&nbsp;<input type="submit" value="Hub">
-</form>
+</body>
+</html>

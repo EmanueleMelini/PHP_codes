@@ -1,3 +1,8 @@
+<html>
+<head>
+    <title>Cancella Prenotazione</title>
+</head>
+<body>
 <?php
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
@@ -27,11 +32,6 @@ if (!$queryeliminaprenotazione_result) {
 	echo("Prenotazione cancellata correttamente");
 }
 ?>
-<html>
-<head>
-	<title>Cancellazione Prenotazione</title>
-</head>
-<body>
 <form action="visual_prenotazioni_attivitaippiche.php">
 	<br>Torna alla visualizzazione delle prenotazioni&nbsp;<input type="submit" value="Vai">
 </form>
