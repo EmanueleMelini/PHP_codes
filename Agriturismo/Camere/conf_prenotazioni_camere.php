@@ -33,15 +33,15 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     $dataoggi = date("Y-m-d");
     $oraoggi = date("H:i");
 
-    $querycontrollodate = "SELECT DataInizio, DataFine FROM PrenSoggiorni INNER JOIN Camere ON PrenSoggiorni.idCamera = Camere.idCamere WHERE Camere.idCamere = '$idcamera'";
+    $querycontrollodate = "SELECT DataInizio, DataFine FROM PrenSoggiorni INNER JOIN Camere ON PrenSoggiorni.idCamera = Camere.idCamere WHERE Camere.idCamere = '$idcamera' AND Eliminato = 0";
     $querycontrollodate_result = $conn->query($querycontrollodate);
     if (!$querycontrollodate_result) {
         echo("Errore nella query 1");
     } else {
+        $flag = true;
         if ($querycontrollodate_result->num_rows == 0) {
-            echo("Nessuna");
+            echo("Nessuna Prenotazione esistente<br>");
         } else {
-            $flag = true;
             $row_controllodate = $querycontrollodate_result->fetch_array();
             echo("Data Inizio $datainizio data fine $datafine<br>");
             while ($row_controllodate != null && $flag) {
@@ -54,21 +54,21 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
                 }
                 $row_controllodate = $querycontrollodate_result->fetch_array();
             }
-            if ($flag) {
+        }
+        if ($flag) {
 
-                $datainiziopren = $datainiziopren->format("Y-m-d");
-                $datafinepren = $datafinepren->format("Y-m-d");
-                $queryprenotazione = "INSERT INTO PrenSoggiorni(idCamera, idCliente, DataP, OraP, DataInizio, DataFine)
+            $datainiziopren = $datainiziopren->format("Y-m-d");
+            $datafinepren = $datafinepren->format("Y-m-d");
+            $queryprenotazione = "INSERT INTO PrenSoggiorni(idCamera, idCliente, DataP, OraP, DataInizio, DataFine)
 VALUES('$idcamera', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$datainiziopren)', '$datafinepren')";
-                $queryprenotazione_result = $conn->query($queryprenotazione);
-                if (!$queryprenotazione_result) {
-                    echo("Errore nella query 2");
-                } else {
-                    echo("Camera prenotata correttamente");
-                }
+            $queryprenotazione_result = $conn->query($queryprenotazione);
+            if (!$queryprenotazione_result) {
+                echo("Errore nella query 2");
             } else {
-                echo("Inserisci una data che non coincide con prenotazioni esistenti!");
+                echo("Camera prenotata correttamente");
             }
+        } else {
+            echo("Inserisci una data che non coincide con prenotazioni esistenti!");
         }
     }
     ?>

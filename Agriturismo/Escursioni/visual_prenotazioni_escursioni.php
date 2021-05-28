@@ -52,11 +52,11 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 </form>");
 	} else {
 		if ($utente === "Cliente") {
-			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Cognome 
+			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Cognome, Prezzo
 FROM PrenEscursioni, Escursioni, Dipendenti
 WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDipendenti = PrenEscursioni.idGuida AND DataE >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
+			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Prezzo
 FROM PrenEscursioni, Escursioni, Dipendenti, Clienti
 WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDipendenti = PrenEscursioni.idGuida AND PrenEscursioni.idCLiente = Clienti.idCLienti AND DataE >= '$dataoggi' AND Eliminato = 0";
 		}

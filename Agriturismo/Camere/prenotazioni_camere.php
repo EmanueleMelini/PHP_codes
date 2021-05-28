@@ -33,7 +33,7 @@ if (!$querycamera_result) {
 } else {
     $row_camera = $querycamera_result->fetch_array();
     echo("Numero $row_camera[Numero] Prezzo $row_camera[Prezzo] Tipo $row_camera[Nome] Max Persone $row_camera[MaxPersone]<br><br>");
-    $queryprencamere = "SELECT * FROM Camere INNER JOIN PrenSoggiorni ON Camere.idCamere = PrenSoggiorni.idCamera INNER JOIN TipiCamere ON Camere.idTipoCamera = TipiCamere.idTipiCamere where Camere.idCamere = '$idcamera'";
+    $queryprencamere = "SELECT * FROM Camere INNER JOIN PrenSoggiorni ON Camere.idCamere = PrenSoggiorni.idCamera INNER JOIN TipiCamere ON Camere.idTipoCamera = TipiCamere.idTipiCamere WHERE Camere.idCamere = '$idcamera' AND Eliminato = 0";
     $queryprencamere_result = $conn->query($queryprencamere);
     if (!$queryprencamere_result) {
         echo("Errore nella query");

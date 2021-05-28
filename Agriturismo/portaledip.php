@@ -6,6 +6,8 @@
 // visualizzare e inserire prezzo alle escursioni e attivitaippiche
 // gestire prezzo nelle prenotazioni escursioni e attivitaippiche
 // scrivere le considerazioni nell'elaborato degli sgarri alla derivazione logica
+// cambiare disegno pop da linea telefonica a fibra
+// mettere ftth
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' || !array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_destroy();

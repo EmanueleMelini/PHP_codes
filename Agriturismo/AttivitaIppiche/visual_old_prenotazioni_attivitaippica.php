@@ -32,7 +32,7 @@ switch ($_SESSION['Tipo']) {
         break;
 }
 
-$queryoldprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, OraInizio, OraFine, Dipendenti.Nome, Cognome, Accettato 
+$queryoldprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, OraInizio, OraFine, Dipendenti.Nome, Cognome, Accettato, Prezzo 
 FROM PrenAttivita, AttivitaIppiche, Dipendenti
 WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND DataA < '$dataoggi' AND idCliente = $_SESSION[idCliente]";
 

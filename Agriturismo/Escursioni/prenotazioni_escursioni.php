@@ -26,6 +26,8 @@ switch ($_SESSION['Tipo']) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $totprezzo = $_POST['totprezzo'];
+    $_SESSION['totprezzo'] = $totprezzo;
     $datapren = $_POST['datapren'];
     $listaid = $_POST['listaid'];
     $listanomi = $_POST['listanomi'];
@@ -41,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
     Confermare l'ordine?
     <form action="conf_prenotazioni_escursioni.php" method="post">
-        <input type="text" value="$datapren" name="datapren" hidden>
-        <input type="text" value="$listaid" name="listaid" hidden>
-        <input type="text" value="$listaguide" name="listaguide" hidden>
+        <input type="text" value="<?=$datapren?>" name="datapren" hidden>
+        <input type="text" value="<?=$listaid?>" name="listaid" hidden>
+        <input type="text" value="<?=$listaguide?>" name="listaguide" hidden>
         <input type="text" name="tipo" value="tipici" hidden>
         <input type="submit" value="Conferma">
     </form>
@@ -97,6 +99,7 @@ if ($queryescursioni_result->num_rows == 0) {
 <br>
 <form action="" method="post">
     Numero Escursioni:&nbsp;<input type="number" name="numesc" id="numesc" readonly>
+    Prezzo:&nbsp;<input type="number" name="totprezzo" id="totprezzo" readonly>
     <input type="text" name="listaid" id="listaid" hidden>
     <input type="text" name="listanomi" id="listanomi" hidden>
     <input type="text" name="listaguide" id="listaguide" hidden>
@@ -113,10 +116,13 @@ if ($queryescursioni_result->num_rows == 0) {
     var listaid = [];
     var listanomi = [];
     var listaguide = [];
+    var prezzo = 0;
     var num = 0;
     var listaescursioniordinate = [];
+    document.getElementById('totprezzo').value = prezzo;
 
     function addEscursione(i) {
+        var prezzoi = "prezzo" + i;
         var idi = "id" + i;
         var nomei = "nome" + i;
         var guidai = "guida" + i;
@@ -125,6 +131,8 @@ if ($queryescursioni_result->num_rows == 0) {
             alert("Scegli una guida!");
         } else {
             if (listaescursioniordinate.indexOf(idescursione) === -1) {
+                prezzo = prezzo + parseInt(document.getElementById(prezzoi).value);
+                document.getElementById('totprezzo').value = prezzo;
                 listaid.push(document.getElementById(idi).value);
                 listanomi.push(document.getElementById(nomei).value);
                 listaguide.push(document.getElementById(guidai).value);
