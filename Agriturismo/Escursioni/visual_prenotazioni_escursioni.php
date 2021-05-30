@@ -15,11 +15,11 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	$dataoggi = date("Y-m-d");
 	$oraoggi = date("H:i");
 
-    $queryeliminato = "UPDATE prenescursioni SET Eliminato = 1 WHERE DataE < '$dataoggi'";
-    $queryeliminato_result = $conn->query($queryeliminato);
-    if(!$queryeliminato_result) {
-        echo("Errore nella query!");
-    }
+	$queryeliminato = "UPDATE prenescursioni SET Eliminato = 1 WHERE DataE < '$dataoggi'";
+	$queryeliminato_result = $conn->query($queryeliminato);
+	if (!$queryeliminato_result) {
+		echo("Errore nella query!");
+	}
 
 	switch ($_SESSION['Tipo']) {
 		case "Cliente":
@@ -43,13 +43,13 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$idprenescursioni = $_POST['idprenescursioni'];
 		$nome = $_POST['nome'];
-
-		echo("Vuoi cancellare davvero la prenotazione di: $nome?");
-		echo("
-<form action='cancella_prenotazione_escursione.php' method='post'>
-    <input type='submit' value='Elimina'>
-    <input type='hidden' name='idprenescursioni' value='$idprenescursioni'>
-</form>");
+		?>
+		<form action=cancella_prenotazione_escursione.php method="post">
+			Vuoi cancellare davvero la prenotazione di: <?= $nome ?>?
+			<input type="submit" value="Elimina">
+			<input type="text" name="idprenescursioni" value="<?= $idprenescursioni ?>" hidden>
+		</form>
+		<?php
 	} else {
 		if ($utente === "Cliente") {
 			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Cognome, Prezzo
@@ -64,47 +64,61 @@ WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDip
 		if (!$queryprenotazioni_result) {
 			echo("Errore nella query");
 		} else {
+			$totprezzo = 0;
 			if ($utente === "Cliente") {
 				echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-			} else if($utente == "Dipendente"){
-                echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-            } else {
-                echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-            }
+			} else if ($utente == "Dipendente") {
+				echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+			} else {
+				echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+			}
 			if ($queryprenotazioni_result->num_rows === 0) {
 				echo("Nessuna prenotazione attiva");
 			} else {
-				echo("<table border='1'>");
-				$row_prenotazioni = $queryprenotazioni_result->fetch_array();
-				while ($row_prenotazioni != null) {
-					echo("<tr>");
-					echo("<td>Nome Escursione: $row_prenotazioni[Nomees]</td>");
-					echo("<td>Meta: $row_prenotazioni[Meta]</td>");
-					echo("<td>Guida: $row_prenotazioni[Nome] $row_prenotazioni[Cognome]</td>");
-					echo("<td>Data Prenotazione: $row_prenotazioni[DataE]</td>");
-					echo("<td>Prezzo: $row_prenotazioni[Prezzo]</td>");
-					if ($utente === "Dipendente") {
-						echo("<td>Cliente: $row_prenotazioni[NomeC] $row_prenotazioni[CognomeC]</td>");
-					}
-					echo("<form action='' method='post'>");
-					echo("<td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td>");
-					echo("<input type='hidden' name='idprenescursioni' value='$row_prenotazioni[idPrenEscursioni]'>");
-					echo("<input type='hidden' name='nome' value='$row_prenotazioni[Nomees]'></form>");
-					echo("</tr>");
+				?>
+				<table border="1">
+					<?php
 					$row_prenotazioni = $queryprenotazioni_result->fetch_array();
+					while ($row_prenotazioni != null) {
+						$totprezzo = $totprezzo + $row_prenotazioni['Prezzo'];
+						?>
+						<tr>
+							<td>Nome Escursione: <?= $row_prenotazioni['Nomees'] ?></td>
+							<td>Meta: <?= $row_prenotazioni['Meta'] ?></td>
+							<td>Guida: <?= $row_prenotazioni['Nome'] . " " . $row_prenotazioni['Cognome'] ?></td>
+							<td>Data Prenotazione: <?= $row_prenotazioni['DataE'] ?></td>
+							<td>Prezzo: <?= $row_prenotazioni['Prezzo'] ?></td>
+							<?php
+							if ($utente === "Dipendente") {
+								?>
+								<td>Cliente: <?= $row_prenotazioni['NomeC'] . " " . $row_prenotazioni['CognomeC'] ?></td>
+								<?php
+							}
+							?>
+							<form action="" method="post">
+								<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
+								<input type="text" name="idprenescursioni" value="<?= $row_prenotazioni['idPrenEscursioni'] ?>" hidden>
+								<input type="text" name="nome" value="<?= $row_prenotazioni['Nomees'] ?>" hidden>
+							</form>
+						</tr>
+						<?php
+						$row_prenotazioni = $queryprenotazioni_result->fetch_array();
+					}
+					?>
+				</table>
+				<?php
+				if ($utente == "Cliente") {
+					echo("<br>Per un totale di $totprezzo euro.");
 				}
-				echo("</table>");
-				echo("<br><br><form action='cancella_tutte_prenotazioni_escursioni.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
+				?>
+				<br><br>
+				<form action="cancella_tutte_prenotazioni_escursioni.php">
+					Cancella tutte le prenotazioni&nbsp;<input type="submit" value="Cancella">
+				</form>
+				<?php
 			}
 		}
 	}
-	if ($utente === "Cliente") {
-		echo("<form action='../portale.php'>");
-	} else {
-		echo("<form action='../portaledip.php'>");
-
-	}
-
 	?>
 	<form action="<?= $urlportale ?>">
 		<br>Torna al portale&nbsp;<input type="submit" value="Vai">

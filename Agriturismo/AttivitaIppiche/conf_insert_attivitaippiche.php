@@ -27,9 +27,9 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	}
 
 	$nome = $_POST['nome'];
-    $orainizio = $_POST['orainizio'];
-    $orafine = $_POST['orafine'];
-    $prezzo = $_POST['prezzo'];
+	$orainizio = $_POST['orainizio'];
+	$orafine = $_POST['orafine'];
+	$prezzo = $_POST['prezzo'];
 
 	$queryattivitaippicains = "INSERT INTO AttivitaIppiche(Nome, OraInizio, OraFine, Prezzo)
 VALUES ('$nome', '$orainizio', '$orafine', '$prezzo')";

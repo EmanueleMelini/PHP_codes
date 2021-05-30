@@ -15,11 +15,11 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	$dataoggi = date("Y-m-d");
 	$oraoggi = date("H:i");
 
-    $queryeliminato = "UPDATE PrenCibi SET Eliminato = 1 WHERE DataP < '$dataoggi'";
-    $queryeliminato_result = $conn->query($queryeliminato);
-    if(!$queryeliminato_result) {
-        echo("Errore nella query!");
-    }
+	$queryeliminato = "UPDATE PrenCibi SET Eliminato = 1 WHERE DataP < '$dataoggi'";
+	$queryeliminato_result = $conn->query($queryeliminato);
+	if (!$queryeliminato_result) {
+		echo("Errore nella query!");
+	}
 
 	switch ($_SESSION['Tipo']) {
 		case "Cliente":
@@ -44,25 +44,25 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		$idprencibi = $_POST['idprencibi'];
 		$nome = $_POST['nome'];
 		$prezzo = $_POST['prezzo'];
-
-		echo("Vuoi cancellare davvero la prenotazione di: $nome?");
-		echo("
-<form action='elimina_prenotazione_cibo.php' method='post'>
-    <input type='submit' value='Elimina'>
-    <input type='hidden' name='idprencibi' value='$idprencibi'>
-    <input type='hidden' name='prezzo' value='$prezzo'>
-</form>");
+		?>
+		<form action="cancella_prenotazione_cibo.php" method="post">
+			Vuoi cancellare davvero la prenotazione di: <?= $nome ?>?
+			<input type="submit" value="Elimina">
+			<input type="hidden" name="idprencibi" value="<?= $idprencibi ?>">
+			<input type="hidden" name="prezzo" value="<?= $prezzo ?>">
+		</form>
+		<?php
 	} else {
 		if ($utente == "Cliente") {
 			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza
 from (prencibi left outer join piattitipici on prencibi.idPiattoTipico = piattitipici.idPiattiTipici)
 left outer join pizze on pizze.idPizze = prencibi.idPizza 
-where Datap >= '$dataoggi' and OraP >= '$oraoggi' and Eliminato = 0 and idCliente = $_SESSION[idCliente]";
+where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0 and idCliente = $_SESSION[idCliente]";
 		} else {
 			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
 from (prencibi left outer join piattitipici on prencibi.idPiattoTipico = piattitipici.idPiattiTipici)
 left outer join pizze on pizze.idPizze = prencibi.idPizza inner join Clienti on PrenCibi.idCLiente = Clienti.idCLienti
-where Datap >= '$dataoggi' and OraP >= '$oraoggi' and Eliminato = 0";
+where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0";
 		}
 		$queryprenotazioni_result = $conn->query($queryprenotazioni);
 		if (!$queryprenotazioni_result) {
@@ -71,50 +71,79 @@ where Datap >= '$dataoggi' and OraP >= '$oraoggi' and Eliminato = 0";
 			$totprezzo = 0;
 			if ($utente === "Cliente") {
 				echo("Prenotazioni del cliente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-			} else if($utente == "Dipendente"){
-                echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-            } else {
-                echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
-            }
+			} else if ($utente == "Dipendente") {
+				echo("Dipendente $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+			} else {
+				echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
+			}
 			if ($queryprenotazioni_result->num_rows === 0) {
 				echo("Nessuna prenotazione attiva");
 			} else {
-				echo("<table border='1'>");
-				$row_prenotazioni = $queryprenotazioni_result->fetch_array();
-				while ($row_prenotazioni != null) {
-					echo("<tr>");
-					if ($row_prenotazioni['idPiattoTipico'] == null) {
-						$totprezzo = $totprezzo + $row_prenotazioni['PrezzoPizza'];
-						echo("<td>Nome Pizza: $row_prenotazioni[NomePizza]</td>");
-						echo("<td>Prezzo: $row_prenotazioni[PrezzoPizza]</td>");
-					} else {
-						$totprezzo = $totprezzo + $row_prenotazioni['PrezzoTipico'];
-						echo("<td>Nome Piatto Tipico: $row_prenotazioni[NomeTipico]</td>");
-						echo("<td>Prezzo: $row_prenotazioni[PrezzoTipico]</td>");
-					}
-					echo("<td>Data Prenotazione: $row_prenotazioni[DataPren]</td>");
-					echo("<td>Ora Prenotazione: $row_prenotazioni[OraPren]</td>");
-					echo("<td>Numero tavolo: $row_prenotazioni[Tavolo]</td>");
-					if ($utente === "Dipendente") {
-						echo("<td>Cliente: $row_prenotazioni[NomeC] $row_prenotazioni[CognomeC]</td>");
-					}
-					echo("<form action='' method='post'><td>Cancella Prenotazione&nbsp;<input type='submit' value='Cancella'></td><input type='hidden' name='idprencibi' value='$row_prenotazioni[idPrenCibi]'>");
-					if ($row_prenotazioni['idPiattoTipico'] == null) {
-						echo("<input type='hidden' name='prezzo' value='$row_prenotazioni[PrezzoPizza]'>");
-						echo("<input type='hidden' name='nome' value='$row_prenotazioni[NomePizza]'></form>");
-					} else {
-						echo("<input type='hidden' name='prezzo' value='$row_prenotazioni[PrezzoTipico]'>");
-						echo("<input type='hidden' name='nome' value='$row_prenotazioni[NomeTipico]'></form>");
-					}
-					echo("</tr>");
+				?>
+				<table border="1">
+					<?php
 					$row_prenotazioni = $queryprenotazioni_result->fetch_array();
+					while ($row_prenotazioni != null) {
+						?>
+						<tr>
+							<?php
+							if ($row_prenotazioni['idPiattoTipico'] == null) {
+								$totprezzo = $totprezzo + $row_prenotazioni['PrezzoPizza'];
+								?>
+								<td>Nome Pizza: <?= $row_prenotazioni['NomePizza'] ?></td>
+								<td>Prezzo: <?= $row_prenotazioni['PrezzoPizza'] ?></td>
+								<?php
+							} else {
+								$totprezzo = $totprezzo + $row_prenotazioni['PrezzoTipico'];
+								?>
+								<td>Nome Piatto Tipico: <?= $row_prenotazioni['NomeTipico'] ?></td>
+								<td>Prezzo: <?= $row_prenotazioni['PrezzoTipico'] ?></td>
+								<?php
+							}
+							?>
+							<td>Data Prenotazione: <?= $row_prenotazioni['DataP'] ?></td>
+							<td>Ora Prenotazione: <?= $row_prenotazioni['OraP'] ?></td>
+							<td>Numero tavolo: <?= $row_prenotazioni['Tavolo'] ?></td>
+							<?php
+							if ($utente === "Dipendente") {
+								?>
+								<td>Cliente: $row_prenotazioni[NomeC] <?= $row_prenotazioni['CognomeC'] ?></td>
+								<?php
+							}
+							?>
+							<form action="" method="post">
+								<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
+								<input type="text" name="idprencibi" value="<?= $row_prenotazioni['idPrenCibi'] ?>" hidden>
+								<?php
+								if ($row_prenotazioni['idPiattoTipico'] == null) {
+									?>
+									<input type="text" name="prezzo" value="<?= $row_prenotazioni['PrezzoPizza'] ?>" hidden>
+									<input type="text" name="nome" value="<?= $row_prenotazioni['NomePizza'] ?>" hidden>
+									<?php
+								} else {
+									?>
+									<input type="text" name="prezzo" value="<?= $row_prenotazioni['PrezzoTipico'] ?>" hidden>
+									<input type="text" name="nome" value="<?= $row_prenotazioni['NomeTipico'] ?>" hidden>
+									<?php
+								}
+								?>
+							</form>
+						</tr>
+						<?php
+						$row_prenotazioni = $queryprenotazioni_result->fetch_array();
+					}
+					?>
+				</table>
+				<?php
+				if ($utente == "Cliente") {
+					echo("<br>Per un totale di $totprezzo euro.");
 				}
-				echo("</table>");
-				if ($utente === "Cliente") {
-					echo("<br>Per un totale di $totprezzo euro");
-				}
-				$_SESSION['totprezzo'] = $totprezzo;
-				echo("<br><br><form action='cancella_tutte_prenotazioni_cibi.php'>Cancella tutte le prenotazioni&nbsp;<input type='submit' value='Cancella'></form>");
+				?>
+				<br><br>
+				<form action="cancella_tutte_prenotazioni_cibi.php">
+					Cancella tutte le prenotazioni&nbsp;<input type="submit" value="Cancella">
+				</form>
+				<?php
 			}
 		}
 	}

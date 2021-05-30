@@ -1,13 +1,12 @@
 <?php
 //TODO:
 // sistemare la visualizzazione html con chiusura dei tag php
-// mettere prezzo nelle escursioni e attività ippiche
 // considerare cambiare prezzo ovunque da int a float
-// visualizzare e inserire prezzo alle escursioni e attivitaippiche
-// gestire prezzo nelle prenotazioni escursioni e attivitaippiche
 // scrivere le considerazioni nell'elaborato degli sgarri alla derivazione logica
 // cambiare disegno pop da linea telefonica a fibra
 // mettere ftth
+// cambiare query in inner join
+// controllare registrazione con email esistente
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' || !array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_destroy();

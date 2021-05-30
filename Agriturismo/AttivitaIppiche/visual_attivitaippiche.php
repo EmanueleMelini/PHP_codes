@@ -58,7 +58,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 				<td>Nome Escursione</td>
 				<td>Ora Inizio</td>
 				<td>Ora Fine</td>
-                <td>Prezzo</td>
+				<td>Prezzo</td>
 			</tr>
 			<tr>
 			<?php
@@ -76,7 +76,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 					<?php
 				}
 				echo("</tr>");
-                $row_attivita = $queryattivitaippiche_result->fetch_array();
+				$row_attivita = $queryattivitaippiche_result->fetch_array();
 			}
 		}
 		?>

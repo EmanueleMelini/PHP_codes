@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Cancella Prenotazione</title>
+	<title>Cancellazione Prenotazione</title>
 </head>
 <body>
 <?php
@@ -25,8 +25,8 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 			break;
 	}
 
-	$idprensoggiorni = $_POST['idprensoggiorni'];
-	$queryeliminaprenotazione = "UPDATE prensoggiorni SET Eliminato = 1 WHERE idPrenSoggiorni = '$idprensoggiorni'";
+	$idprencibi = $_POST['idprencibi'];
+	$queryeliminaprenotazione = "UPDATE PrenCibi SET Eliminato = 1 WHERE idPrenCibi = '$idprencibi'";
 	$queryeliminaprenotazione_result = $conn->query($queryeliminaprenotazione);
 	if (!$queryeliminaprenotazione_result) {
 		echo("Errore nella query");
@@ -34,7 +34,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		echo("Prenotazione cancellata correttamente");
 	}
 	?>
-	<form action="visual_prenotazioni_soggiorni.php">
+	<form action="visual_prenotazioni_cibi.php">
 		<br>Torna alla visualizzazione delle prenotazioni&nbsp;<input type="submit" value="Vai">
 	</form>
 	<form action="<?= $urlportale ?>">
