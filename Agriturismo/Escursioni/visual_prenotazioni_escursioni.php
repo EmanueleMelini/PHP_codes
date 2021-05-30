@@ -4,8 +4,6 @@
 </head>
 <body>
 <?php
-//TODO: mettere accettazione
-// mettere vecchie prenotazioni
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -52,13 +50,13 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		<?php
 	} else {
 		if ($utente === "Cliente") {
-			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Cognome, Prezzo
-FROM PrenEscursioni, Escursioni, Dipendenti
-WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDipendenti = PrenEscursioni.idGuida AND DataE >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
+			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Cognome, Prezzo, Eliminato, Accettato
+FROM PrenEscursioni INNER JOIN Escursioni ON Escursioni.idEscursioni = PrenEscursioni.idEscursione INNER JOIN Dipendenti ON Dipendenti.idDipendenti = PrenEscursioni.idGuida
+WHERE DataE >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Prezzo
-FROM PrenEscursioni, Escursioni, Dipendenti, Clienti
-WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDipendenti = PrenEscursioni.idGuida AND PrenEscursioni.idCLiente = Clienti.idCLienti AND DataE >= '$dataoggi' AND Eliminato = 0";
+			$queryprenotazioni = "SELECT idPrenEscursioni, idEscursione, idCliente, DataE, idGuida, Escursioni.Nome as Nomees, Meta, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Prezzo, Eliminato, Accettato
+FROM PrenEscursioni INNER JOIN Escursioni ON Escursioni.idEscursioni = PrenEscursioni.idEscursione INNER JOIN Dipendenti ON Dipendenti.idDipendenti = PrenEscursioni.idGuida INNER JOIN Clienti ON PrenEscursioni.idCLiente = Clienti.idCLienti
+WHERE DataE >= '$dataoggi' AND Eliminato = 0";
 		}
 		$queryprenotazioni_result = $conn->query($queryprenotazioni);
 		if (!$queryprenotazioni_result) {
@@ -94,12 +92,38 @@ WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDip
 								<td>Cliente: <?= $row_prenotazioni['NomeC'] . " " . $row_prenotazioni['CognomeC'] ?></td>
 								<?php
 							}
+							if ($utente == "Cliente" || $utente == "Amministratore") {
+								if ($row_prenotazioni['Accettato'] == 0) {
+									?>
+									<form action="" method="post">
+										<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
+										<input type="text" name="idprenescursioni" value="<?= $row_prenotazioni['idPrenEscursioni'] ?>" hidden>
+										<input type="text" name="nome" value="<?= $row_prenotazioni['Nomees'] ?>" hidden>
+									</form>
+									<?php
+								} else {
+									?>
+									<td>Prenotazione Accettata</td>
+									<?php
+								}
+							} else {
+								if ($row_prenotazioni['Accettato'] == 0) {
+									?>
+									<form action="accetta_prenotazioni_escursioni.php" method="post">
+										<td>
+											Accetta Prenotazione&nbsp;<input type="submit" value="Accetta">
+											<input type="text" name="idprenescursioni" value="<?= $row_prenotazioni['idPrenEscursioni'] ?>" hidden>
+										</td>
+									</form>
+									<?php
+								} else {
+									?>
+									<td>Prenotazione Accettata&nbsp;<input type="submit" value="Accettata" disabled>
+									</td>
+									<?php
+								}
+							}
 							?>
-							<form action="" method="post">
-								<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
-								<input type="text" name="idprenescursioni" value="<?= $row_prenotazioni['idPrenEscursioni'] ?>" hidden>
-								<input type="text" name="nome" value="<?= $row_prenotazioni['Nomees'] ?>" hidden>
-							</form>
 						</tr>
 						<?php
 						$row_prenotazioni = $queryprenotazioni_result->fetch_array();
@@ -119,9 +143,16 @@ WHERE Escursioni.idEscursioni = PrenEscursioni.idEscursione AND Dipendenti.idDip
 			}
 		}
 	}
+	if ($utente == "Cliente") {
+		?>
+		<form action="visual_old_prenotazioni_escursioni.php">
+			Visualizza vecchie prenotazioni&nbsp;<input type="submit" value="Vai">
+		</form>
+		<?php
+	}
 	?>
 	<form action="<?= $urlportale ?>">
-		<br>Torna al portale&nbsp;<input type="submit" value="Vai">
+		Torna al portale&nbsp;<input type="submit" value="Vai">
 	</form>
 	<?php
 }

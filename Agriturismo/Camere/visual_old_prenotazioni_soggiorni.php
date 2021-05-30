@@ -34,7 +34,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 
 	$queryoldprenotazioni = "SELECT idPrenSoggiorni, idCamere, Numero, idCliente, DataInizio, DataFine, Nome, Descrizione, Eliminato, Accettato, Prezzo 
 FROM PrenSoggiorni INNER JOIN Camere ON PrenSoggiorni.idCamera = Camere.idCamere INNER JOIN Tipicamere ON Camere.idTipoCamera = TipiCamere.idTipiCamere
-WHERE DataFine < '$dataoggi' AND idCliente = $_SESSION[idCliente]";
+WHERE (Eliminato = 1 OR (DataFine < '$dataoggi' AND Accettato = 1)) AND idCliente = $_SESSION[idCliente]";
 
 	$queryoldprenotazioni_result = $conn->query($queryoldprenotazioni);
 	if (!$queryoldprenotazioni_result) {
@@ -58,7 +58,17 @@ WHERE DataFine < '$dataoggi' AND idCliente = $_SESSION[idCliente]";
 						<td>Data Fine: <?= $row_oldprenotazioni['DataFine'] ?></td>
 						<td>Prezzo: <?= $row_oldprenotazioni['Prezzo'] ?></td>
 						<td>Tipo Camera: <?= $row_oldprenotazioni['Nome'] . " " . $row_oldprenotazioni['Descrizione'] ?></td>
-						<td>Data Prenotazione: <?= $row_oldprenotazioni['DataA'] ?></td>
+						<?php
+						if ($row_oldprenotazioni['Eliminato'] == 1) {
+							?>
+							<td>Prenotazione Cancellata</td>
+							<?php
+						} else if ($row_oldprenotazioni['Accettato'] == 1) {
+							?>
+							<td>Prenotazione Accettata</td>
+							<?php
+						}
+						?>
 					</tr>
 					<?php
 					$row_oldprenotazioni = $queryoldprenotazioni_result->fetch_array();

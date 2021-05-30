@@ -4,7 +4,6 @@
 </head>
 <body>
 <?php
-
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
     session_destroy();
     header("Location: http://localhost/Login/Agriturismo/hub.html");
@@ -29,7 +28,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 
     $numero = $_POST['numero'];
     $prezzo = $_POST['prezzo'];
-    $maxpersone = $_POST['maxpersone'];
+    $tipicamere = $_POST['tipicamere'];
 
     $querycamere = "SELECT * FROM Camere";
     $querycamere_result = $conn->query($querycamere);
@@ -46,7 +45,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
         }
         if (!$f) {
 
-            $querycamerains = "INSERT INTO Camere(Numero, Prezzo, MaxPersone) VALUES ('$numero', '$prezzo', '$maxpersone')";
+            $querycamerains = "INSERT INTO Camere(Numero, Prezzo, idTipoCamera) VALUES ('$numero', '$prezzo', '$tipicamere')";
             $querycamerains_result = $conn->query($querycamerains);
             if (!$querycamerains_result) {
                 echo("Errore nella query");

@@ -28,10 +28,23 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	if ($querymenu_result->num_rows == 0) {
 		echo("Nessuna pizza nel menu");
 	} else {
-		echo("<table border='1'><tr><td>Nome Pizza</td><td>Descrizione Pizza</td><td>Prezzo Pizza</td></tr><tr>");
+		?>
+		<table border="1">
+		<tr>
+			<td>Nome Pizza</td>
+			<td>Descrizione Pizza</td>
+			<td>Prezzo Pizza</td>
+		</tr>
+		<?php
 		$row_menu = $querymenu_result->fetch_array();
 		while ($row_menu != null) {
-			echo("<td>$row_menu[Nome]</td><td>$row_menu[Descrizione]</td><td>$row_menu[Prezzo] euro</td></tr>");
+			?>
+			<tr>
+				<td><?= $row_menu['Nome'] ?></td>
+				<td><?= $row_menu['Descrizione'] ?></td>
+				<td><?= $row_menu['Prezzo'] ?> euro</td>
+			</tr>
+			<?php
 			$row_menu = $querymenu_result->fetch_array();
 		}
 	}

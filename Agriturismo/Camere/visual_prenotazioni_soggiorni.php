@@ -4,8 +4,6 @@
 </head>
 <body>
 <?php
-//TODO: mettere accettazione
-// mettere vecchie prenotazioni
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -56,11 +54,11 @@ $prezzo = $_POST['prezzo'];
 	<?php
 	} else {
 		if ($utente === "Cliente") {
-			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, idCliente, DataInizio, DataFine, Nome AS NomeT, MaxPersone 
+			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, idCliente, DataInizio, DataFine, Nome AS NomeT, MaxPersone, Eliminato, Accettato
 FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere INNER JOIN TipiCamere ON TipiCamere.idTipiCamere = Camere.idTipoCamera
 WHERE Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, idCliente, DataInizio, DataFine, Clienti.Nome AS NomeC, Clienti.Cognome AS CognomeC, TipiCamere.Nome AS NomeT, MaxPersone
+			$queryprenotazioni = "SELECT idPrenSoggiorni, idCamera, Numero, Prezzo, idCliente, DataInizio, DataFine, Clienti.Nome AS NomeC, Clienti.Cognome AS CognomeC, TipiCamere.Nome AS NomeT, MaxPersone, Eliminato, Accettato
 FROM prensoggiorni INNER JOIN camere ON prensoggiorni.idCamera = camere.idCamere INNER JOIN Clienti ON CLienti.idClienti = PrenSoggiorni.idCLiente INNER JOIN TipiCamere ON TipiCamere.idTipiCamere = Camere.idTipoCamera
 WHERE Eliminato = 0";
 		}
@@ -99,13 +97,39 @@ WHERE Eliminato = 0";
 								<td>Cliente: <?= $row_prenotazioni['NomeC'] . " " . $row_prenotazioni['CognomeC'] ?></td>
 								<?php
 							}
+							if ($utente == "Cliente" || $utente == "Amministratore") {
+								if ($row_prenotazioni['Accettato'] == 0) {
+									?>
+									<form action="" method="post">
+										<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
+										<input type="hidden" name="prezzo" value="<?= $row_prenotazioni['Prezzo'] ?>">
+										<input type="hidden" name="numero" value="<?= $row_prenotazioni['Numero'] ?>">
+										<input type="hidden" name="idprensoggiorni" value="<?= $row_prenotazioni['idPrenSoggiorni'] ?>">
+									</form>
+									<?php
+								} else {
+									?>
+									<td>Prenotazione Accettata</td>
+									<?php
+								}
+							} else {
+								if ($row_prenotazioni['Accettato'] == 0) {
+									?>
+									<form action="accetta_prenotazioni_soggiorni.php" method="post">
+										<td>
+											Accetta Prenotazione&nbsp;<input type="submit" value="Accetta">
+											<input type="text" name="idprensoggiorni" value="<?= $row_prenotazioni['idPrenSoggiorni'] ?>" hidden>
+										</td>
+									</form>
+									<?php
+								} else {
+									?>
+									<td>Prenotazione Accettata&nbsp;<input type="submit" value="Accettata" disabled>
+									</td>
+									<?php
+								}
+							}
 							?>
-							<form action="" method="post">
-								<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
-								<input type="hidden" name="prezzo" value="<?= $row_prenotazioni['Prezzo'] ?>">
-								<input type="hidden" name="numero" value="<?= $row_prenotazioni['Numero'] ?>">
-								<input type="hidden" name="idprensoggiorni" value="<?= $row_prenotazioni['idPrenSoggiorni'] ?>">
-							</form>
 						</tr>
 						<?php
 						$row_prenotazioni = $queryprenotazioni_result->fetch_array();
@@ -125,9 +149,16 @@ WHERE Eliminato = 0";
 			}
 		}
 	}
+	if ($utente == "Cliente") {
+		?>
+		<form action="visual_old_prenotazioni_soggiorni.php">
+			Visualizza vecchie prenotazioni&nbsp;<input type="submit" value="Vai">
+		</form>
+		<?php
+	}
 	?>
 	<form action="<?= $urlportale ?>">
-		<br>Torna al portale&nbsp;<input type="submit" value="Vai">
+		Torna al portale&nbsp;<input type="submit" value="Vai">
 	</form>
 	<?php
 	}

@@ -4,8 +4,6 @@
 </head>
 <body>
 <?php
-//TODO: mettere accettazione
-// mettere vecchie prenotazioni
 if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	header("Location: http://localhost/Login/Agriturismo/hub.html");
 } else {
@@ -54,12 +52,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 		<?php
 	} else {
 		if ($utente == "Cliente") {
-			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza
+			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza, Eliminato, Accettato
 from (prencibi left outer join piattitipici on prencibi.idPiattoTipico = piattitipici.idPiattiTipici)
 left outer join pizze on pizze.idPizze = prencibi.idPizza 
 where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0 and idCliente = $_SESSION[idCliente]";
 		} else {
-			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC
+			$queryprenotazioni = "select idPrenCibi, idCLiente, DataP, OraP, Tavolo, idPiattoTipico, piattitipici.Nome as NomeTipico, piattitipici.Prezzo as PrezzoTipico, idPizza, pizze.Nome as NomePizza, pizze.Prezzo as PrezzoPizza, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Eliminato, Accettato
 from (prencibi left outer join piattitipici on prencibi.idPiattoTipico = piattitipici.idPiattiTipici)
 left outer join pizze on pizze.idPizze = prencibi.idPizza inner join Clienti on PrenCibi.idCLiente = Clienti.idCLienti
 where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0";
@@ -77,7 +75,7 @@ where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0";
 				echo("Amministratore $_SESSION[Nome] $_SESSION[Cognome]<br><br>");
 			}
 			if ($queryprenotazioni_result->num_rows === 0) {
-				echo("Nessuna prenotazione attiva");
+				echo("Nessuna prenotazione attiva<br><br>");
 			} else {
 				?>
 				<table border="1">
@@ -105,29 +103,53 @@ where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0";
 							<td>Ora Prenotazione: <?= $row_prenotazioni['OraP'] ?></td>
 							<td>Numero tavolo: <?= $row_prenotazioni['Tavolo'] ?></td>
 							<?php
-							if ($utente === "Dipendente") {
+							if ($utente == "Dipendente") {
 								?>
-								<td>Cliente: $row_prenotazioni[NomeC] <?= $row_prenotazioni['CognomeC'] ?></td>
+								<td>Cliente: <?= $row_prenotazioni['NomeC'] . " " . $row_prenotazioni['CognomeC'] ?></td>
 								<?php
 							}
-							?>
-							<form action="" method="post">
-								<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
-								<input type="text" name="idprencibi" value="<?= $row_prenotazioni['idPrenCibi'] ?>" hidden>
-								<?php
-								if ($row_prenotazioni['idPiattoTipico'] == null) {
+							if ($utente == "Cliente" || $utente == "Amministratore") {
+								if ($row_prenotazioni['Accettato'] == 0) {
 									?>
-									<input type="text" name="prezzo" value="<?= $row_prenotazioni['PrezzoPizza'] ?>" hidden>
-									<input type="text" name="nome" value="<?= $row_prenotazioni['NomePizza'] ?>" hidden>
+									<form action="" method="post">
+										<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
+										<input type="text" name="idprencibi" value="<?= $row_prenotazioni['idPrenCibi'] ?>" hidden>
+										<?php
+										if ($row_prenotazioni['idPiattoTipico'] == null) {
+											?>
+											<input type="text" name="prezzo" value="<?= $row_prenotazioni['PrezzoPizza'] ?>" hidden>
+											<input type="text" name="nome" value="<?= $row_prenotazioni['NomePizza'] ?>" hidden>
+											<?php
+										} else {
+											?>
+											<input type="text" name="prezzo" value="<?= $row_prenotazioni['PrezzoTipico'] ?>" hidden>
+											<input type="text" name="nome" value="<?= $row_prenotazioni['NomeTipico'] ?>" hidden>
+											<?php
+										}
+										?>
+									</form>
 									<?php
 								} else {
 									?>
-									<input type="text" name="prezzo" value="<?= $row_prenotazioni['PrezzoTipico'] ?>" hidden>
-									<input type="text" name="nome" value="<?= $row_prenotazioni['NomeTipico'] ?>" hidden>
+									<td>Prenotazione Accettata</td>
 									<?php
 								}
-								?>
-							</form>
+							} else {
+								if ($row_prenotazioni['Accettato'] == 0) {
+									?>
+									<form action="accetta_prenotazioni_cibi.php" method="post">
+										<td>Accetta Prenotazione&nbsp;<input type="submit" value="Accetta"></td>
+										<input type="text" name="idprencibi" value="<?= $row_prenotazioni['idPrenCibi'] ?>" hidden>
+									</form>
+									<?php
+								} else {
+									?>
+									<td>Prenotazione Accettata&nbsp;<input type="submit" value="Accettata" disabled>
+									</td>
+									<?php
+								}
+							}
+							?>
 						</tr>
 						<?php
 						$row_prenotazioni = $queryprenotazioni_result->fetch_array();
@@ -147,9 +169,16 @@ where Datap >= '$dataoggi' and OraC >= '$oraoggi' and Eliminato = 0";
 			}
 		}
 	}
+	if ($utente == "Cliente") {
+		?>
+		<form action="visual_old_prenotazioni_cibi.php">
+			Visualizza vecchie prenotazioni&nbsp;<input type="submit" value="Vai">
+		</form>
+		<?php
+	}
 	?>
 	<form action="<?= $urlportale ?>">
-		<br>Torna al portale&nbsp;<input type="submit" value="Vai">
+		Torna al portale&nbsp;<input type="submit" value="Vai">
 	</form>
 	<?php
 }

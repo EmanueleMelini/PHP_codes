@@ -51,12 +51,12 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	} else {
 		if ($utente == "Cliente") {
 			$queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, OraInizio, OraFine, Dipendenti.Nome, Cognome, Accettato, Prezzo
-FROM PrenAttivita, AttivitaIppiche, Dipendenti
-WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
+FROM PrenAttivita INNER JOIN AttivitaIppiche ON AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita INNER JOIN Dipendenti Dipendenti.idDipendenti = PrenAttivita.idAddetto
+WHERE DataA >= '$dataoggi' AND Eliminato = 0 AND idCliente = $_SESSION[idCliente]";
 		} else {
 			$queryprenotazioni = "SELECT idPrenAttivita, idAttivita, idCliente, DataA, OraInizio, OraFine, idAddetto, AttivitaIppiche.Nome as Nomeatt, OraInizio, OraFine, Dipendenti.Nome, Dipendenti.Cognome, Clienti.Nome as NomeC, Clienti.Cognome as CognomeC, Accettato, Prezzo
-FROM PrenAttivita, AttivitaIppiche, Dipendenti, Clienti
-WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti.idDipendenti = PrenAttivita.idAddetto AND PrenAttivita.idCLiente = Clienti.idCLienti AND DataA >= '$dataoggi' AND Eliminato = 0";
+FROM PrenAttivita INNER JOIN AttivitaIppiche ON AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita INNER JOIN Dipendenti ON Dipendenti.idDipendenti = PrenAttivita.idAddetto INNER JOIN Clienti ON PrenAttivita.idCLiente = Clienti.idCLienti
+WHERE DataA >= '$dataoggi' AND Eliminato = 0";
 		}
 		$queryprenotazioni_result = $conn->query($queryprenotazioni);
 		if (!$queryprenotazioni_result) {
@@ -99,7 +99,8 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 									<form action="" method="post">
 										<td>Cancella Prenotazione&nbsp;<input type="submit" value="Cancella"></td>
 										<input type="text" name="idprenattivitaippiche" value="<?= $row_prenotazioni['idPrenAttivita'] ?>" hidden>
-										<input type="text" name="nome" value="<?= $row_prenotazioni['Nomeatt'] ?>" hidden></form>
+										<input type="text" name="nome" value="<?= $row_prenotazioni['Nomeatt'] ?>" hidden>
+									</form>
 									<?php
 								} else {
 									?>
@@ -143,10 +144,14 @@ WHERE AttivitaIppiche.idAttivitaIppiche = PrenAttivita.idAttivita AND Dipendenti
 			}
 		}
 	}
+	if ($utente == "Cliente") {
+		?>
+		<form action="visual_old_prenotazioni_attivitaippica.php">
+			Visualizza vecchie prenotazioni&nbsp;<input type="submit" value="Vai">
+		</form>
+		<?php
+	}
 	?>
-	<form action="visual_old_prenotazioni_attivitaippica.php">
-		Visualizza vecchie prenotazioni&nbsp;<input type="submit" value="Vai">
-	</form>
 	<form action="<?= $urlportale ?>">
 		Torna al portale&nbsp;<input type="submit" value="Vai">
 	</form>
