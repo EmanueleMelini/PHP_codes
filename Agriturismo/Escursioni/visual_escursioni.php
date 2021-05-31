@@ -59,7 +59,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 			<tr>
 				<td>Nome Escursione</td>
 				<td>Meta</td>
-                <td>Prezzo</td>
+				<td>Prezzo</td>
 			</tr><tr>
 			<?php
 			$row_escursioni = $queryescursioni_result->fetch_array();
@@ -76,7 +76,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 					<?php
 				}
 				echo("</tr>");
-                $row_escursioni = $queryescursioni_result->fetch_array();
+				$row_escursioni = $queryescursioni_result->fetch_array();
 			}
 		}
 		?>

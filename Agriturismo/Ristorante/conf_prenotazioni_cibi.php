@@ -50,6 +50,9 @@ VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$t
 	if ($f)
 		echo("Ordine prenotato correttamente");
 	?>
+	<form action="visual_prenotazioni_cibi.php">
+		Visualizza prenotazioni&nbsp;<input type="submit" value="Vai">
+	</form>
 	<form action="<?= $urlportale ?>">
 		Torna all'hub&nbsp;<input type="submit" value="Hub">
 	</form>

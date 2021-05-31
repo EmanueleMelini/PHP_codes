@@ -13,7 +13,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
 	$dataoggi = date("Y-m-d");
 	$oraoggi = date("H:i");
 
-	$queryeliminato = "UPDATE PrenAttivita SET Eliminato = 1 WHERE DataA < '$dataoggi'";
+	$queryeliminato = "UPDATE PrenAttivita SET Eliminato = 1 WHERE DataA < '$dataoggi' AND Accettato = 0";
 	$queryeliminato_result = $conn->query($queryeliminato);
 	if (!$queryeliminato_result) {
 		echo("Errore nella query!");

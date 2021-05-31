@@ -13,7 +13,7 @@ session_start();
 $dataoggi = date("Y-m-d");
 $oraoggi = date("H:i");
 
-$queryeliminato = "UPDATE PrenSoggiorni SET Eliminato = 1 WHERE DataInizio < '$dataoggi'";
+$queryeliminato = "UPDATE PrenSoggiorni SET Eliminato = 1 WHERE DataInizio < '$dataoggi' AND Accettato = 0";
 $queryeliminato_result = $conn->query($queryeliminato);
 if (!$queryeliminato_result) {
 	echo("Errore nella query!");

@@ -23,7 +23,7 @@ if (!array_key_exists("HTTP_REFERER", $_SERVER)) {
             break;
         default :
             $urlportale = "../hub.html";
-            break;
+			break;
     }
 
     $nome = $_POST['nome'];

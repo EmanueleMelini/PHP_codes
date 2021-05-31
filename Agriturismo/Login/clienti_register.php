@@ -42,6 +42,11 @@ VALUES('$nome', '$cognome', '$sesso', '$datan', '$telefono', '$indirizzo', '$cit
 			echo("Errore nella query");
 		} else {
 			echo("Cliente registrato correttamente");
+			?>
+			<form action="../hub.html">
+				Torna all'hub<input type="submit" value="Hub">
+			</form>
+			<?php
 		}
 	}
 } else {

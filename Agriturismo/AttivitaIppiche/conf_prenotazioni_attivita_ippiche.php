@@ -46,6 +46,9 @@ VALUES('$listaidarray[$i]', '$_SESSION[idCliente]', '$dataoggi', '$oraoggi', '$d
 	if ($f)
 		echo("Ordine prenotato correttamente");
 	?>
+	<form action="visual_prenotazioni_attivitaippiche.php">
+		Visualizza prenotazioni&nbsp;<input type="submit" value="Vai">
+	</form>
 	<form action="<?= $urlportale ?>">
 		Torna all'hub&nbsp;<input type="submit" value="Hub">
 	</form>
